@@ -1,6 +1,6 @@
 # Wordflow — English Gap Trainer
 
-Fill in the missing word. Six levels, A1 to C2, 648 original sentences grouped by grammar topic. Unlimited practice — there is nothing to unlock and nothing to beat.
+Fill in the missing word. Six levels, A1 to C2, 3,048 original sentences grouped by grammar topic — 508 per level, 26 topics each. Unlimited practice: there is nothing to unlock and nothing to beat.
 
 **Live:** https://juliogb01.github.io/english-gap-exercise/
 
@@ -35,7 +35,9 @@ index.html          Markup for the home / game / results screens and both sheets
 css/
   style.css         All styling — Switch-style dark theme, monospace sentence card
 js/
-  data.js           The sentence bank (BANK) and the level list (LEVELS)
+  data.js           The level list (LEVELS); assembles BANK from js/bank/
+  bank/
+    a1.js …  c2.js  The sentences, one file per level — 508 lines each
   state.js          Persistent state (practice tallies, preferences) + localStorage wrapper
   questions.js      Flattens the bank into per-level lists; answer matching, distractors
   audio.js          Sound effects (WebAudio) and haptics
@@ -52,7 +54,7 @@ Native ES modules (`<script type="module">`) — no bundler, no build tooling.
 
 ## Adding your own lines
 
-Open `js/data.js` and add to any topic. The format is:
+Open the file for the level in `js/bank/` and add to any topic. The format is:
 
 ```
 "text before the gap|text after the gap|answer|alt1,alt2"
