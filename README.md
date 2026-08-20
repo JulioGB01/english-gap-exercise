@@ -1,12 +1,29 @@
 # Wordflow — English Gap Trainer
 
-A fast, offline-friendly English gap-fill trainer, from A1 to C2. Fill the blank, hold the streak, level up.
+Fill the missing word in a line of film dialogue. Six levels, A1 to C2, 648 lines of original screenplay-style writing.
 
-Play it live: enable GitHub Pages for this repo (Settings → Pages → Deploy from branch → `main` / `/ (root)`), then open `https://<username>.github.io/<repo>/`.
+**Live:** https://juliogb01.github.io/english-gap-exercise/
+
+## How it plays
+
+- Pick any level — all six are open from the start, no unlocking.
+- Each run serves a set number of lines (5 / 10 / 15 / 25, in Settings).
+- Answer with **word tiles** (pick from six) or the **keyboard** (type it).
+- Keyboard mode gives you exactly one hint per line: reveal the first letter.
+- Three hearts. A wrong answer costs one. Lose all three and the run ends.
+- Stars per level are based on your best accuracy: 3 stars = flawless, 2 = 85%, 1 = 70%.
+
+Anything you missed is listed at the end of the run with the answer filled in.
+
+## Publishing changes
+
+Double-click **`push.bat`**. It stages everything, commits, and pushes to `main`; GitHub Pages redeploys about a minute later. On the very first run it initialises the repo and may open a browser window to sign you in to GitHub.
+
+You can pass a commit message: `push.bat Added more C1 idioms`.
 
 ## Play locally
 
-No build step — it's a static site. Any static server works, e.g.:
+No build step — it's a static site, so it just needs a server (ES modules won't load from `file://`):
 
 ```
 npx serve .
@@ -14,40 +31,57 @@ npx serve .
 python3 -m http.server 8080
 ```
 
-Then open `http://localhost:PORT/index.html`.
+Then open `http://localhost:PORT/`.
 
 ## Project structure
 
 ```
 index.html          Markup for the home / game / results screens and settings sheet
+push.bat            One-click commit + push to GitHub
 css/
-  style.css          All styling
+  style.css         All styling — Switch-style dark theme, screenplay dialogue card
 js/
-  data.js            The sentence bank (BANK) and the level list (LEVELS)
-  state.js           Persistent player state (XP, coins, best scores, settings) + localStorage wrapper
-  questions.js        Flattens the bank into per-level question lists; scoring/matching helpers
-  audio.js           Sound effects (WebAudio) and haptics
-  dom.js             Small DOM helpers: screen switching, toasts
-  home.js            Renders the home screen / level list
-  game.js            The run engine: question flow, hints, timer, answer submission
-  results.js         Scores a finished run and renders the results screen
-  settings.js        Settings sheet rendering and wiring
-  main.js            Entry point — wires up buttons and boots the app
+  data.js           The sentence bank (BANK) and the level list (LEVELS)
+  state.js          Persistent state (best accuracy, preferences) + localStorage wrapper
+  questions.js      Flattens the bank into per-level lists; answer matching, distractors
+  audio.js          Sound effects (WebAudio) and haptics
+  dom.js            Screen switching and toasts
+  home.js           The level tile grid
+  game.js           The run engine: question flow, hint, hearts, scoring
+  results.js        Scores a finished run and renders the results screen
+  settings.js       Settings sheet
+  main.js           Entry point
 ```
 
-The app is a set of native ES modules (`<script type="module">`), so it needs no bundler or build tooling — just serve the files as-is.
+Native ES modules (`<script type="module">`) — no bundler, no build tooling.
 
-## Adding content
+## Adding your own lines
 
-Add new lines to any category in `js/data.js`. Each line follows:
+Open `js/data.js` and add to any category. The format is:
 
 ```
-"before the gap|after the gap|answer|alt1,alt2"
+"text before the gap|text after the gap|answer|alt1,alt2"
 ```
 
-`alt1,alt2` (optional) are accepted alternative answers.
+- The answer must be a **single word**.
+- Field 4 is optional — a comma-separated list of other words that should also be accepted.
+- Leave field 1 empty if the gap starts the sentence (capitalise the answer).
+- The text after the gap gets a space in front of it automatically, unless it starts with punctuation — so write `"."` for a gap that ends the sentence.
+- Don't use `|` inside the sentence text, and don't let the answer word appear in the visible part of the line.
+
+Examples:
+
+```
+"I|from Bolivia.|am"
+"|you from Spain?|Are"
+"You need to let it|.|go"
+"We|dinner at eight.|had|ate"
+```
+
+New lines are picked up on reload — nothing else to update. Wrong-answer tiles are generated automatically from the other answers in the same level.
 
 ## Notes
 
-- All six levels (A1–C2) are open from the start — there's no progression lock. The "Continue" button on the home screen just jumps to the first level you haven't cleared yet (70%+ accuracy), as a suggestion.
-- Progress (XP, coins, best scores, settings) is stored in `localStorage` under the key `wordflow`, with an in-memory fallback if storage is unavailable.
+- Progress is stored in `localStorage` under the key `wordflow`, with an in-memory fallback.
+- Design is dark-mode only by intent: charcoal surfaces, a neon accent per level, white selection rings.
+- All dialogue is original writing, not transcribed from real films.

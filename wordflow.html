@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no, interactive-widget=resizes-content">
+<meta name="theme-color" content="#080A12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="color-scheme" content="dark">
+<title>Wordflow — English gap trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;900&family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#080A12;
+  --ink-2:#0F1422;
+  --ink-3:#161C2E;
+  --line:rgba(255,255,255,.08);
+  --line-2:rgba(255,255,255,.14);
+  --paper:#EDF0F9;
+  --mute:#8892AC;
+  --gold:#FFC24B;
+  --mint:#3DDC84;
+  --rose:#FF5D73;
+  --hue:#7C6BFF;
+  --pad:18px;
+  --radius:20px;
+  --safe-t:env(safe-area-inset-top,0px);
+  --safe-b:env(safe-area-inset-bottom,0px);
+  --display:'Archivo','Segoe UI',Roboto,system-ui,sans-serif;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{
+  background:var(--ink);
+  color:var(--paper);
+  font-family:var(--display);
+  overscroll-behavior:none;
+  -webkit-user-select:none;user-select:none;
+  touch-action:manipulation;
+}
+body::before{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(120% 60% at 50% -10%, color-mix(in srgb, var(--hue) 22%, transparent), transparent 70%),
+    radial-gradient(90% 50% at 100% 100%, rgba(255,194,75,.07), transparent 70%);
+  transition:background .5s ease;
+}
+button,input{font-family:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+
+/* ---------- screens ---------- */
+.screen{
+  position:fixed;inset:0;
+  display:none;flex-direction:column;
+  padding:calc(var(--safe-t) + 14px) var(--pad) calc(var(--safe-b) + 14px);
+  max-width:560px;margin:0 auto;
+  animation:rise .28s cubic-bezier(.2,.8,.3,1);
+}
+.screen.on{display:flex}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--mute);
+}
+
+/* ---------- home ---------- */
+.home-top{display:flex;align-items:center;gap:12px}
+.rank-badge{
+  width:44px;height:44px;flex:0 0 44px;border-radius:14px;
+  display:grid;place-items:center;font-weight:900;font-size:15px;
+  background:linear-gradient(160deg,var(--gold),#E0821F);color:#1A1206;
+}
+.rank-meta{flex:1;min-width:0}
+.rank-name{font-size:13px;font-weight:700;letter-spacing:.02em}
+.xpbar{height:6px;border-radius:99px;background:var(--ink-3);margin-top:5px;overflow:hidden}
+.xpbar i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width .6s cubic-bezier(.2,.8,.3,1)}
+.coinpill{
+  display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:99px;
+  background:var(--ink-2);border:1px solid var(--line);font-weight:800;font-size:14px;color:var(--gold)
+}
+.icon-btn{
+  width:44px;height:44px;border-radius:14px;background:var(--ink-2);border:1px solid var(--line);
+  display:grid;place-items:center;font-size:18px;color:var(--mute)
+}
+.icon-btn:active{transform:scale(.94)}
+
+.brand{margin:26px 0 18px}
+.brand h1{
+  font-size:clamp(44px,15vw,64px);line-height:.86;font-weight:900;letter-spacing:-.04em;
+}
+.brand h1 em{font-style:normal;color:var(--hue);transition:color .5s}
+.tagline{font-family:var(--serif);font-size:17px;color:var(--mute);margin-top:10px}
+
+.scroller{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;margin:0 calc(var(--pad)*-1);padding:2px var(--pad) 8px}
+.level-list{display:flex;flex-direction:column;gap:10px}
+.lvl{
+  position:relative;display:flex;align-items:center;gap:14px;
+  padding:14px;border-radius:var(--radius);
+  background:linear-gradient(120deg,color-mix(in srgb,var(--c) 16%,var(--ink-2)),var(--ink-2));
+  border:1px solid var(--line);text-align:left;width:100%;
+}
+.lvl:active{transform:scale(.985)}
+.lvl.locked{opacity:.42}
+.lvl-code{
+  width:52px;height:52px;flex:0 0 52px;border-radius:16px;display:grid;place-items:center;
+  font-weight:900;font-size:19px;letter-spacing:-.02em;
+  background:var(--c);color:#08101A;
+}
+.lvl.locked .lvl-code{background:var(--ink-3);color:var(--mute)}
+.lvl-body{flex:1;min-width:0}
+.lvl-name{font-weight:700;font-size:15px}
+.lvl-sub{font-size:12px;color:var(--mute);margin-top:2px}
+.stars{display:flex;gap:3px;font-size:13px;margin-top:6px;color:var(--ink-3)}
+.stars .on{color:var(--gold)}
+.lvl-go{color:var(--mute);font-size:20px;font-weight:700}
+
+.cta{
+  margin-top:12px;width:100%;padding:18px;border-radius:18px;
+  background:var(--paper);color:#0A0C14;font-weight:900;font-size:17px;letter-spacing:.02em;
+  text-transform:uppercase;
+}
+.cta:active{transform:scale(.98)}
+.cta.ghost{background:transparent;border:1px solid var(--line-2);color:var(--paper)}
+.cta[disabled]{opacity:.35}
+.row{display:flex;gap:10px}
+.row .cta{margin-top:0}
+
+/* ---------- game ---------- */
+.hud{display:flex;align-items:center;gap:10px}
+.track{flex:1;height:8px;border-radius:99px;background:var(--ink-3);overflow:hidden}
+.track i{display:block;height:100%;background:var(--hue);border-radius:99px;transition:width .35s ease}
+.hearts{display:flex;gap:4px;font-size:15px}
+.hearts span{filter:grayscale(1);opacity:.28;transition:.25s}
+.hearts span.on{filter:none;opacity:1}
+.qcount{font-size:12px;font-weight:800;color:var(--mute);min-width:38px;text-align:right}
+
+.combo{
+  display:flex;align-items:center;gap:8px;margin:14px 0 0;height:22px;
+  font-weight:900;font-size:13px;letter-spacing:.08em;color:var(--gold);opacity:0;transition:.25s
+}
+.combo.on{opacity:1}
+.combo .bar{flex:1;height:4px;border-radius:99px;background:var(--ink-3);overflow:hidden}
+.combo .bar i{display:block;height:100%;background:var(--gold);transition:width .3s}
+
+.card{
+  flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;
+  padding:22px 4px;min-height:0;
+}
+.sentence{
+  font-family:var(--serif);font-size:clamp(22px,6.4vw,30px);line-height:1.55;font-weight:400;
+  letter-spacing:-.01em;
+}
+.slot{
+  display:inline-block;min-width:74px;padding:0 8px;margin:0 2px;
+  text-align:center;font-family:var(--display);font-weight:700;
+  color:var(--hue);border-bottom:3px dashed color-mix(in srgb,var(--hue) 55%,transparent);
+  transition:.2s;
+}
+.slot.filled{border-bottom-style:solid}
+.slot.good{color:var(--mint);border-color:var(--mint)}
+.slot.bad{color:var(--rose);border-color:var(--rose);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.slot-input{
+  width:100%;min-width:74px;background:none;border:0;outline:none;
+  font-family:var(--display);font-weight:700;font-size:inherit;color:var(--hue);text-align:center;
+}
+.feedback{font-size:14px;font-weight:700;min-height:20px;color:var(--mute)}
+.feedback b{color:var(--mint)}
+.feedback.bad b{color:var(--rose)}
+
+.hints{display:flex;gap:8px;margin-bottom:12px}
+.hint{
+  flex:1;padding:11px 6px;border-radius:14px;background:var(--ink-2);border:1px solid var(--line);
+  font-size:11px;font-weight:800;letter-spacing:.04em;color:var(--mute);line-height:1.5
+}
+.hint b{display:block;font-size:16px;color:var(--paper);margin-bottom:2px}
+.hint small{color:var(--gold);font-size:10px}
+.hint:active{transform:scale(.96)}
+.hint.used{opacity:.3;pointer-events:none}
+
+.tiles{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:12px}
+.tile{
+  flex:1 1 40%;padding:16px 10px;border-radius:16px;
+  background:var(--ink-2);border:1px solid var(--line-2);
+  font-weight:700;font-size:16px;min-height:56px;
+}
+.tile:active{transform:scale(.96);background:var(--ink-3)}
+.tile.gone{opacity:0;pointer-events:none;transform:scale(.9)}
+.tile.pick-good{background:var(--mint);color:#062012;border-color:var(--mint)}
+.tile.pick-bad{background:var(--rose);color:#2A0810;border-color:var(--rose)}
+.typebox{
+  display:flex;align-items:center;gap:10px;padding:6px 6px 6px 18px;margin-bottom:12px;
+  background:var(--ink-2);border:1px solid var(--line-2);border-radius:18px;
+}
+.typebox input{
+  flex:1;min-width:0;background:none;border:0;outline:none;font-size:18px;font-weight:700;padding:14px 0
+}
+.typebox input::placeholder{color:var(--mute);font-weight:500}
+
+.toast{
+  position:fixed;left:50%;top:calc(var(--safe-t) + 70px);transform:translate(-50%,-16px);
+  background:var(--paper);color:#0A0C14;padding:10px 16px;border-radius:99px;
+  font-weight:900;font-size:13px;opacity:0;pointer-events:none;transition:.25s;z-index:50;white-space:nowrap
+}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- results ---------- */
+.result-head{text-align:center;padding:20px 0 6px}
+.big-stars{font-size:38px;letter-spacing:6px;color:var(--ink-3)}
+.big-stars .on{color:var(--gold)}
+.result-title{font-size:30px;font-weight:900;letter-spacing:-.02em;margin-top:12px}
+.result-sub{font-size:14px;color:var(--mute);margin-top:6px}
+.grid-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0 14px}
+.stat{background:var(--ink-2);border:1px solid var(--line);border-radius:16px;padding:14px 8px;text-align:center}
+.stat b{display:block;font-size:22px;font-weight:900}
+.stat span{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute)}
+.review{display:flex;flex-direction:column;gap:8px}
+.review-item{
+  background:var(--ink-2);border:1px solid var(--line);border-left:3px solid var(--rose);
+  border-radius:12px;padding:11px 13px;font-family:var(--serif);font-size:14px;line-height:1.5;color:var(--mute)
+}
+.review-item b{font-family:var(--display);color:var(--mint);font-weight:800}
+
+/* ---------- sheet ---------- */
+.sheet-wrap{position:fixed;inset:0;z-index:60;display:none}
+.sheet-wrap.on{display:block}
+.scrim{position:absolute;inset:0;background:rgba(4,6,12,.7)}
+.sheet{
+  position:absolute;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;
+  background:var(--ink-2);border:1px solid var(--line);border-radius:26px 26px 0 0;
+  padding:20px var(--pad) calc(var(--safe-b) + 20px);
+  max-height:88vh;overflow-y:auto;animation:up .25s cubic-bezier(.2,.8,.3,1)
+}
+@keyframes up{from{transform:translateY(100%)}to{transform:none}}
+.sheet h2{font-size:19px;font-weight:900;margin-bottom:4px}
+.opt{margin-top:18px}
+.opt>label{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.seg{display:flex;gap:6px;margin-top:8px}
+.seg button{
+  flex:1;padding:12px 4px;border-radius:12px;background:var(--ink-3);border:1px solid transparent;
+  font-weight:800;font-size:13px;color:var(--mute)
+}
+.seg button.on{background:var(--paper);color:#0A0C14}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+.toggle-row span{font-size:15px;font-weight:600}
+.sw{width:50px;height:30px;border-radius:99px;background:var(--ink-3);position:relative;flex:0 0 50px;transition:.2s}
+.sw::after{content:'';position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:var(--mute);transition:.2s}
+.sw.on{background:color-mix(in srgb,var(--mint) 40%,var(--ink-3))}
+.sw.on::after{left:23px;background:var(--mint)}
+.danger{color:var(--rose);font-weight:800;font-size:14px;padding:16px 0 0;width:100%;text-align:left}
+
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;border-radius:10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<section class="screen on" id="home">
+  <div class="home-top">
+    <div class="rank-badge" id="rankLv">1</div>
+    <div class="rank-meta">
+      <div class="rank-name" id="rankName">Newcomer</div>
+      <div class="xpbar"><i id="xpFill" style="width:0%"></i></div>
+    </div>
+    <div class="coinpill">◈ <span id="coinCount">0</span></div>
+    <button class="icon-btn" id="openSettings" aria-label="Settings">⚙</button>
+  </div>
+
+  <div class="brand">
+    <span class="eyebrow">English gap trainer</span>
+    <h1>WORD<em>FLOW</em></h1>
+    <p class="tagline">Fill the blank. Hold the streak.</p>
+  </div>
+
+  <div class="scroller">
+    <div class="level-list" id="levelList"></div>
+  </div>
+
+  <button class="cta" id="quickPlay">Continue</button>
+</section>
+
+<!-- ============ GAME ============ -->
+<section class="screen" id="game">
+  <div class="hud">
+    <button class="icon-btn" id="quitBtn" aria-label="Quit">✕</button>
+    <div class="track"><i id="trackFill" style="width:0%"></i></div>
+    <div class="qcount" id="qCount">1/10</div>
+    <div class="hearts" id="hearts"></div>
+  </div>
+
+  <div class="combo" id="combo">
+    <span id="comboX">⚡ x2</span>
+    <div class="bar"><i id="comboBar" style="width:0%"></i></div>
+  </div>
+
+  <div class="card">
+    <span class="eyebrow" id="catTag">Phrasal verb</span>
+    <p class="sentence" id="sentence"></p>
+    <p class="feedback" id="feedback"></p>
+  </div>
+
+  <div class="hints" id="hints"></div>
+  <div id="answerZone"></div>
+  <button class="cta" id="actionBtn">Check</button>
+</section>
+
+<!-- ============ RESULTS ============ -->
+<section class="screen" id="results">
+  <div class="result-head">
+    <div class="big-stars" id="bigStars">★★★</div>
+    <div class="result-title" id="resTitle">Level clear</div>
+    <div class="result-sub" id="resSub">B1 · 8 of 10 correct</div>
+  </div>
+  <div class="grid-stats">
+    <div class="stat"><b id="stAcc">0%</b><span>Accuracy</span></div>
+    <div class="stat"><b id="stXp">0</b><span>XP</span></div>
+    <div class="stat"><b id="stStreak">0</b><span>Best run</span></div>
+  </div>
+  <div class="scroller">
+    <span class="eyebrow" id="reviewLabel">Worth another look</span>
+    <div class="review" id="review" style="margin-top:10px"></div>
+  </div>
+  <div class="row" style="margin-top:12px">
+    <button class="cta ghost" id="homeBtn">Home</button>
+    <button class="cta" id="againBtn">Play again</button>
+  </div>
+</section>
+
+<!-- ============ SETTINGS ============ -->
+<div class="sheet-wrap" id="sheetWrap">
+  <div class="scrim" id="scrim"></div>
+  <div class="sheet">
+    <h2>Settings</h2>
+    <div class="opt">
+      <label>Questions per run</label>
+      <div class="seg" id="segCount"></div>
+    </div>
+    <div class="opt">
+      <label>Answer with</label>
+      <div class="seg" id="segMode">
+        <button data-mode="tap">Word tiles</button>
+        <button data-mode="type">Keyboard</button>
+      </div>
+    </div>
+    <div class="opt">
+      <div class="toggle-row"><span>Timer (15s per gap)</span><div class="sw" data-set="timed"></div></div>
+      <div class="toggle-row"><span>Sound</span><div class="sw" data-set="sound"></div></div>
+      <div class="toggle-row"><span>Vibration</span><div class="sw" data-set="haptics"></div></div>
+      <div class="toggle-row"><span>Unlock all levels</span><div class="sw" data-set="unlockAll"></div></div>
+    </div>
+    <button class="danger" id="resetBtn">Reset all progress</button>
+    <button class="cta" id="closeSheet" style="margin-top:18px">Done</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   SENTENCE BANK
+   Format: "before the gap|after the gap|answer|alt1,alt2"
+   Add your own lines to any category — the game picks them up on reload.
+   ===================================================================== */
+const BANK = {
+A1: {
+  "Verb to be": [
+    "I|from Bolivia.|am",
+    "She|a teacher at my school.|is",
+    "They|my best friends.|are",
+    "We|not ready yet.|are",
+    "He|very tired today.|is",
+    "|you from Spain?|Are",
+    "It|cold in the morning.|is",
+    "My name|Ana.|is"
+  ],
+  "Present simple": [
+    "She|to work by bus every day.|goes",
+    "I|coffee every morning.|drink|have",
+    "He|football on Saturdays.|plays",
+    "They|in a small house near the river.|live",
+    "My brother|not like fish.|does",
+    "|you speak English?|Do",
+    "The shop|at nine o'clock.|opens",
+    "We|TV after dinner.|watch"
+  ],
+  "Articles and plurals": [
+    "I have|apple in my bag.|an",
+    "She is|engineer.|an",
+    "I have two|and one sister.|brothers",
+    "This is|book I told you about.|the",
+    "He bought|new phone yesterday.|a",
+    "I brush my|twice a day.|teeth",
+    "One child, two|.|children",
+    "|is a cat under the table.|There"
+  ],
+  "Prepositions": [
+    "The keys are|the table.|on",
+    "I live|La Paz.|in",
+    "We have a meeting|Monday.|on",
+    "The class starts|8 o'clock.|at",
+    "She is waiting|the bus stop.|at",
+    "The milk is|the fridge.|in|inside",
+    "My birthday is|June.|in",
+    "The bank is next|the pharmacy.|to"
+  ],
+  "Everyday words": [
+    "How|are you? I'm 25.|old",
+    "What|is it? It's three o'clock.|time",
+    "I'm hungry. Let's|something to eat.|get|buy,have",
+    "Nice to|you!|meet",
+    "Excuse me, how|is this shirt?|much",
+    "I don't|. Can you repeat that?|understand",
+    "Where|you live?|do",
+    "I'm sorry, I'm|. The traffic was terrible.|late"
+  ],
+  "Can and have got": [
+    "I|swim very well.|can",
+    "She|got two dogs.|has",
+    "|I open the window?|Can|May,Could",
+    "We|got any milk left.|haven't",
+    "|you help me, please?|Can|Could,Will",
+    "He|drive because he is only fifteen.|can't|cannot",
+    "How many brothers have you|?|got",
+    "I|speak French, only Spanish.|can't|cannot"
+  ]
+},
+A2: {
+  "Past simple": [
+    "I|to the cinema last night.|went",
+    "She|her keys yesterday.|lost",
+    "We|dinner at eight.|had|ate",
+    "He|me a message this morning.|sent",
+    "They didn't|the bus, so they walked.|catch|take",
+    "|you see the news last night?|Did",
+    "I|not know that.|did",
+    "The film|three hours.|lasted",
+    "She|born in 1995.|was",
+    "I|up at six this morning.|got|woke"
+  ],
+  "Comparatives": [
+    "This bag is|than mine.|bigger",
+    "She is the|student in the class.|best",
+    "Today is hotter|yesterday.|than",
+    "My car is not as fast|yours.|as",
+    "That was the|film I have ever seen.|worst|best",
+    "He runs|than his brother.|faster",
+    "It's the most expensive restaurant|town.|in",
+    "This one is much|. I'll take it.|cheaper"
+  ],
+  "Future and plans": [
+    "I'm|to visit my aunt tomorrow.|going",
+    "She|call you later, don't worry.|will",
+    "We|meeting them at seven.|are",
+    "I think it|rain this afternoon.|will|might",
+    "What are you|to do this weekend?|going",
+    "The train|at 6:15 tomorrow morning.|leaves|departs",
+    "I'll|you when I arrive.|call|text"
+  ],
+  "Present continuous": [
+    "Be quiet, the baby|sleeping.|is",
+    "What|you doing right now?|are",
+    "They|working on a new project.|are",
+    "I|not feeling very well today.|am",
+    "Look! It|snowing.|is",
+    "He is|for the bus outside.|waiting"
+  ],
+  "Quantifiers": [
+    "There isn't|milk in the fridge.|much|any",
+    "How|people came to the party?|many",
+    "We only have|few minutes left.|a",
+    "She doesn't have|money.|much|any",
+    "There are|of tourists in summer.|lots|plenty",
+    "Would you like|more coffee?|some",
+    "I have|time today, sorry.|no|little"
+  ],
+  "Everyday phrasal verbs": [
+    "Please|up, I can't hear you.|speak",
+    "I need to|off my shoes.|take",
+    "|on! I'm almost ready.|Hold|Come,Hang",
+    "She|up early on weekdays.|gets|wakes",
+    "Can you|on the light, please?|turn|switch",
+    "He is looking|his glasses everywhere.|for",
+    "|down and relax for a minute.|Sit|Calm",
+    "I'll|you back in five minutes.|call|ring"
+  ]
+},
+B1: {
+  "Present perfect": [
+    "I have|in this city since 2019.|lived|worked",
+    "She hasn't finished the report|.|yet",
+    "Have you|been to Argentina?|ever",
+    "We have known each other|ten years.|for",
+    "He has|left the office.|already|just",
+    "I've been waiting|two hours.|for",
+    "They have just|the news.|heard",
+    "This is the first time I|tried sushi.|have"
+  ],
+  "Conditionals and wishes": [
+    "If it rains, we|stay at home.|will",
+    "If I|more time, I would travel more.|had",
+    "I wish I|speak Chinese.|could",
+    "If you heat water to 100 degrees, it|.|boils",
+    "She would help you if you|her.|asked",
+    "Unless you hurry, you|miss the train.|will",
+    "I wouldn't do that if I|you.|were|was"
+  ],
+  "Modals and advice": [
+    "You|see a doctor about that cough.|should|must",
+    "You|smoke in here, it's forbidden.|mustn't|can't",
+    "He|be at home, his car is outside.|must",
+    "We|to leave before midnight.|have|need",
+    "You don't|to bring anything.|have|need",
+    "|you mind opening the window?|Would|Do",
+    "She|not be able to come tonight.|might|may"
+  ],
+  "Relatives and linkers": [
+    "The woman|lives next door is a nurse.|who|that",
+    "This is the house|I grew up.|where",
+    "I was tired,|I went to bed early.|so",
+    "|it was raining, we went for a walk.|Although|Though",
+    "He didn't study,|he passed the exam.|but|yet",
+    "The reason|I called is simple.|why",
+    "I'll wait|you finish.|until|till",
+    "The film,|was three hours long, was boring.|which"
+  ],
+  "Phrasal verbs": [
+    "Can you|after my cat this weekend?|look",
+    "The meeting was|off at the last minute.|called|put",
+    "I'm trying to|out how it works.|figure|find,work",
+    "She|up smoking two years ago.|gave",
+    "Prices keep|up every month.|going",
+    "We|out of coffee this morning.|ran",
+    "He|up his mind to move abroad.|made",
+    "Please|down my number.|write|take"
+  ],
+  "Dependent prepositions": [
+    "I'm not very good|remembering names.|at",
+    "She's married|a doctor.|to",
+    "Congratulations|your new job!|on",
+    "It depends|the weather.|on",
+    "I'm interested|learning more about it.|in",
+    "He apologized|being late.|for",
+    "We're thinking|moving to Spain.|of|about",
+    "This umbrella belongs|my sister.|to"
+  ]
+},
+B2: {
+  "Natural dialogue": [
+    "We were on a|!|break",
+    "I'm going to make him an offer he can't|.|refuse",
+    "You need to let it|.|go",
+    "I've got a bad feeling about|.|this",
+    "It is what it|.|is",
+    "Can we just figure this|?|out",
+    "I wouldn't worry about it if I were|.|you",
+    "That's exactly what I've been trying to tell|.|you",
+    "Are you out of your|?|mind",
+    "I don't think you realize what's at|.|stake",
+    "I'm completely exhausted. Let's call it a|.|day",
+    "We need to get to the bottom of|.|this",
+    "It turns out he was lying the whole|.|time",
+    "Please don't jump to|.|conclusions",
+    "I really don't want to get involved in|.|this"
+  ],
+  "Phrasal verbs": [
+    "I need to|up on my Spanish before the trip.|brush",
+    "We ran|of gas on the way to the airport.|out",
+    "She decided to|down the job offer because of the salary.|turn",
+    "Can you|out what this sign says?|make|figure",
+    "He usually|after his father when it comes to stubbornness.|takes",
+    "They had to|off the wedding due to a family emergency.|call",
+    "I can't|up with this terrible noise anymore!|put",
+    "The car|down right in the middle of the highway.|broke",
+    "He completely|up that story to avoid getting in trouble.|made",
+    "The plane|off smoothly despite the heavy rain.|took",
+    "I think you should|over the document before signing it.|look|read,go",
+    "We need to|down on how much sugar we are eating.|cut",
+    "Let's|ahead with the plan regardless of what they say.|go|press,push",
+    "She finally|round to cleaning the garage.|got",
+    "I accidentally|across an old photo album in the attic.|came",
+    "I will|you up from the station at 5 PM.|pick",
+    "Don't ever|up on your dreams.|give",
+    "He managed to|over the flu just in time for the party.|get"
+  ],
+  "Collocations and prepositions": [
+    "She takes great pride|her work.|in",
+    "I am deeply concerned|the recent changes in policy.|about|by",
+    "He was absolutely thrilled|the gift you sent him.|with|by",
+    "They are completely unaware|the danger they are in.|of",
+    "She is very heavily involved|the local charity.|in",
+    "I have absolutely no intention|resigning.|of",
+    "The delay was caused|a technical issue.|by",
+    "There has been a massive increase|the cost of living.|in",
+    "He was blamed|the mistake, even though it wasn't his fault.|for",
+    "We are fully committed|improving customer satisfaction.|to",
+    "She is largely responsible|organizing the annual event.|for",
+    "I am completely opposed|this ridiculous idea.|to",
+    "It relies entirely|donations from the public.|on|upon",
+    "I am so tired|listening to his constant complaining.|of",
+    "He was widely praised|his bravery during the fire.|for"
+  ],
+  "Grammar": [
+    "I wouldn't have done that if I|you.|were|was",
+    "She|have left already, her coat is gone.|must",
+    "You|better not tell anyone about this.|had",
+    "I will help you as|as you promise to keep it a secret.|long",
+    "He passed the exam|the fact that he didn't study at all.|despite",
+    "I'll take an umbrella in|it rains.|case",
+    "We went for a walk even|it was freezing cold.|though",
+    "She acts as|she owns the place.|if|though",
+    "You are supposed|be here at 8 AM sharp.|to",
+    "By the time we arrive, the movie will|started.|have",
+    "I wish I|studied harder for the final test.|had",
+    "If only I|how to drive a manual car.|knew",
+    "He is used|waking up early for work.|to",
+    "She is really looking forward|meeting you next week.|to",
+    "Hardly had I arrived|the phone started ringing.|when",
+    "It's high time we|something about it.|did",
+    "No matter|hard he tries, it never works.|how"
+  ]
+},
+C1: {
+  "Advanced collocations": [
+    "The new evidence casts serious|on his story.|doubt",
+    "She bears a striking|to her mother.|resemblance",
+    "The proposal met with fierce|from the board.|resistance|opposition",
+    "He made a conscious|to change careers.|decision|effort",
+    "The two sides finally reached a|.|compromise|deal",
+    "The scandal did lasting|to his reputation.|damage|harm",
+    "Let's take a closer|at the figures.|look",
+    "She paid close|to every detail.|attention",
+    "That argument simply doesn't hold|.|water",
+    "We need to strike a|between cost and quality.|balance",
+    "His remarks were completely|of context.|out",
+    "The company is under mounting|to cut costs.|pressure"
+  ],
+  "Inversion and emphasis": [
+    "Not only|he apologize, but he also paid for the damage.|did",
+    "Rarely|I seen such a beautiful sunset.|have",
+    "No sooner had we sat down|the phone rang.|than",
+    "Under no circumstances|you share this file.|should|must",
+    "Only after the meeting|I understand the problem.|did",
+    "Had I known,|would have called you.|I",
+    "Little|they know what was coming.|did",
+    "So exhausted|he that he fell asleep standing up.|was",
+    "It was John|broke the window, not me.|who|that",
+    "What I need|a proper holiday.|is"
+  ],
+  "Discourse and hedging": [
+    "|and large, the results were positive.|By",
+    "That said, there is|room for improvement.|still|some",
+    "To some|, I agree with you.|extent|degree",
+    "In light|the new data, we changed our approach.|of",
+    "He is, if|, even more talented than his sister.|anything",
+    "Broadly|, the two systems work the same way.|speaking",
+    "Given|circumstances, that was the right call.|the",
+    "On the|hand, it would save us a lot of money.|other",
+    "It goes|saying that safety comes first.|without",
+    "As|as I'm concerned, the matter is closed.|far"
+  ],
+  "Idioms": [
+    "You're barking up the wrong|.|tree",
+    "Let's play it by|and see what happens.|ear",
+    "That project has been on the back|for months.|burner",
+    "He always beats around the|instead of answering.|bush",
+    "I'll cut to the|: we're over budget.|chase",
+    "They were caught|guard by the announcement.|off",
+    "It turned out to be a blessing in|.|disguise",
+    "We'll have to bite the|and tell them.|bullet",
+    "She has a lot on her|right now.|plate",
+    "That idea is a long|, but let's try it.|shot"
+  ],
+  "Advanced phrasal verbs": [
+    "The company had to|back on spending.|cut|scale",
+    "I won't|up with that behaviour any longer.|put",
+    "Let's|down the problem into smaller parts.|break",
+    "The deal fell|at the last minute.|through|apart",
+    "We need to|up with a better solution.|come",
+    "He|out of the agreement two days later.|backed|pulled",
+    "The truth eventually|out.|came",
+    "I'll|you up on that offer.|take",
+    "The meeting|on far longer than expected.|dragged|went",
+    "She|through a difficult period last year.|went"
+  ]
+},
+C2: {
+  "Subtle idioms": [
+    "She won the case hands|.|down",
+    "That explanation strains|.|credulity|belief",
+    "He was damned with faint|.|praise",
+    "They are flogging a dead|.|horse",
+    "The proposal was dead in the|from the start.|water",
+    "Let's not throw the baby out with the|.|bathwater",
+    "She has the whole routine down to a fine|.|art",
+    "He gave a warts-and-|account of the affair.|all",
+    "The argument is a straw|and easy to knock down.|man",
+    "That decision came back to|them a year later.|haunt|bite"
+  ],
+  "Formal structures": [
+    "Were it|for your help, we would have failed.|not",
+    "Suffice it|say, the meeting did not go well.|to",
+    "Be that as it|, the decision stands.|may",
+    "Insofar|the law allows, we will comply.|as",
+    "He insisted that she|present at the hearing.|be",
+    "|the event of a delay, contact the office.|In",
+    "Notwithstanding the|, the project continued.|delays|risks",
+    "Should you|any questions, please contact us.|have",
+    "It is imperative that everyone|on time.|arrive|be",
+    "Such|his influence that nobody dared object.|was"
+  ],
+  "Nuanced collocations": [
+    "The findings lend|to the original theory.|weight|support,credence",
+    "He was at|to explain that no offence was intended.|pains",
+    "The evidence is, at|, circumstantial.|best",
+    "Her reputation preceded|.|her",
+    "They drew a|under the whole affair.|line|veil",
+    "The article struck a raw|with readers.|nerve",
+    "He harbours no|about the difficulty ahead.|illusions",
+    "The policy has been quietly|in recent months.|shelved|dropped",
+    "Their objections were summarily|.|dismissed|rejected",
+    "The two accounts are wildly at|.|odds"
+  ],
+  "Fixed expressions": [
+    "I take your point, but by the same|, we must be careful.|token",
+    "For all|and purposes, the project is finished.|intents",
+    "In the|analysis, results are what matter.|final|last",
+    "To|matters worse, it started raining.|make",
+    "By|of comparison, last year was much worse.|way",
+    "Time and|, he has proven them wrong.|again",
+    "Much to my|, she agreed immediately.|surprise|relief",
+    "Far be it|me to criticize.|from",
+    "On second|, let's postpone the trip.|thought|thoughts",
+    "Without so much|a word, he walked out.|as"
+  ]
+}
+};
+
+const LEVELS = [
+  {id:"A1", name:"Beginner",            sub:"To be, present simple, first prepositions", c:"#5BE0B4"},
+  {id:"A2", name:"Elementary",          sub:"Past simple, comparatives, plans",           c:"#4CC9F0"},
+  {id:"B1", name:"Intermediate",        sub:"Present perfect, conditionals, modals",      c:"#7C6BFF"},
+  {id:"B2", name:"Upper intermediate",  sub:"Phrasal verbs, collocations, real dialogue", c:"#C46BFF"},
+  {id:"C1", name:"Advanced",            sub:"Inversion, hedging, idioms",                 c:"#FF8A5B"},
+  {id:"C2", name:"Mastery",             sub:"Register, formal structures, nuance",        c:"#FFC24B"}
+];
+
+/* =====================================================================
+   ENGINE
+   ===================================================================== */
+const $ = s => document.querySelector(s);
+const el = id => document.getElementById(id);
+
+/* ---- storage: uses localStorage when available, memory otherwise ---- */
+const mem = {};
+const Store = {
+  get(k,d){ try{ const v = localStorage.getItem(k); if(v!=null) return JSON.parse(v); }catch(e){} return (k in mem)? mem[k] : d; },
+  set(k,v){ mem[k]=v; try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+const DEFAULTS = {xp:0, coins:60, best:{}, unlocked:{A1:true}, count:10, mode:null, timed:false, sound:true, haptics:true, unlockAll:false};
+let S = Object.assign({}, DEFAULTS, Store.get('wordflow', {}));
+const isTouch = ('ontouchstart' in window) || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
+if(!S.mode) S.mode = isTouch ? 'tap' : 'type';
+const save = () => Store.set('wordflow', S);
+
+/* ---- flatten the bank ---- */
+const QS = {};
+for(const lv in BANK){
+  QS[lv] = [];
+  for(const cat in BANK[lv]){
+    BANK[lv][cat].forEach(row=>{
+      const p = row.split('|');
+      if(p.length < 3) return;
+      QS[lv].push({
+        p1:p[0], p2:p[1], ans:p[2].trim(), cat, lv,
+        alts:(p[3]||'').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean)
+      });
+    });
+  }
+}
+
+/* ---- helpers ---- */
+const norm = s => String(s).toLowerCase().replace(/[\u2019\u2018]/g,"'").replace(/[.,!?;:]+$/,'').trim().replace(/\s+/g,' ');
+const esc  = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const levelMeta = id => LEVELS.find(l=>l.id===id);
+const unlocked = id => S.unlockAll || id==='A1' || !!S.unlocked[id];
+const RANKS = ["Newcomer","Learner","Speaker","Storyteller","Wordsmith","Native-ish"];
+function levelInfo(xp){ let lv=1, need=120, rem=xp; while(rem>=need){ rem-=need; lv++; need=Math.round(need*1.22); } return {lv, rem, need}; }
+function multFor(streak){ return streak>=8?4 : streak>=5?3 : streak>=3?2 : 1; }
+
+/* ---- sound + haptics ---- */
+let AC=null;
+function tone(freq,dur,type,vol,delay){
+  if(!S.sound) return;
+  try{
+    AC = AC || new (window.AudioContext||window.webkitAudioContext)();
+    if(AC.state==='suspended') AC.resume();
+    const t = AC.currentTime + (delay||0);
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = type||'sine'; o.frequency.setValueAtTime(freq,t);
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(vol||0.12, t+0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+dur+0.03);
+  }catch(e){}
+}
+const sfx = {
+  good(m){ tone(523,.12,'triangle',.12,0); tone(784,.16,'triangle',.11,.07); if(m>1) tone(1046,.18,'triangle',.09,.14); },
+  bad(){ tone(180,.22,'sawtooth',.09,0); tone(120,.26,'sawtooth',.08,.06); },
+  coin(){ tone(1200,.07,'square',.05,0); },
+  up(){ [392,523,659,880].forEach((f,i)=>tone(f,.18,'triangle',.1,i*.09)); },
+  tap(){ tone(440,.05,'sine',.05,0); },
+  over(){ [330,262,196].forEach((f,i)=>tone(f,.28,'sine',.1,i*.13)); }
+};
+const buzz = p => { if(S.haptics && navigator.vibrate) try{ navigator.vibrate(p); }catch(e){} };
+
+/* ---- screens + toast ---- */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  el(id).classList.add('on');
+}
+let toastT;
+function toast(msg){
+  const t = el('toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(()=>t.classList.remove('on'), 1900);
+}
+
+/* =====================================================================
+   HOME
+   ===================================================================== */
+function renderHome(){
+  const info = levelInfo(S.xp);
+  el('rankLv').textContent = info.lv;
+  el('rankName').textContent = RANKS[Math.min(RANKS.length-1, Math.floor((info.lv-1)/3))] + ' · ' + info.rem + '/' + info.need + ' XP';
+  el('xpFill').style.width = Math.round(info.rem/info.need*100) + '%';
+  el('coinCount').textContent = S.coins;
+
+  const list = el('levelList'); list.innerHTML = '';
+  LEVELS.forEach(L=>{
+    const open = unlocked(L.id);
+    const best = S.best[L.id] || 0;
+    const stars = best>=1 ? 3 : best>=.85 ? 2 : best>=.7 ? 1 : 0;
+    const b = document.createElement('button');
+    b.className = 'lvl' + (open?'':' locked');
+    b.style.setProperty('--c', L.c);
+    b.innerHTML =
+      '<div class="lvl-code">' + (open ? L.id : '🔒') + '</div>' +
+      '<div class="lvl-body">' +
+        '<div class="lvl-name">' + L.name + '</div>' +
+        '<div class="lvl-sub">' + (open ? L.sub : 'Score 70% in ' + prevOf(L.id) + ' to unlock') + '</div>' +
+        (open ? '<div class="stars"><span class="'+(stars>0?'on':'')+'">★</span><span class="'+(stars>1?'on':'')+'">★</span><span class="'+(stars>2?'on':'')+'">★</span></div>' : '') +
+      '</div>' +
+      '<div class="lvl-go">' + (open?'▶':'') + '</div>';
+    b.addEventListener('click', ()=>{
+      if(!open){ buzz(30); toast('Locked — clear ' + prevOf(L.id) + ' with 70%'); return; }
+      sfx.tap(); startRun(L.id);
+    });
+    list.appendChild(b);
+  });
+
+  const next = highestOpen();
+  el('quickPlay').textContent = 'Continue · ' + next;
+  document.documentElement.style.setProperty('--hue', levelMeta(next).c);
+}
+const prevOf = id => LEVELS[LEVELS.findIndex(l=>l.id===id)-1].id;
+function highestOpen(){ let h='A1'; LEVELS.forEach(L=>{ if(unlocked(L.id)) h=L.id; }); return h; }
+
+/* =====================================================================
+   RUN
+   ===================================================================== */
+let R = null;
+const HINTS = [
+  {k:'len',   icon:'▁▁▁', label:'Length', cost:4},
+  {k:'first', icon:'A_',  label:'1st letter', cost:8},
+  {k:'half',  icon:'½',   label:'50/50', cost:14}
+];
+
+function startRun(lv){
+  const pool = shuffle(QS[lv].slice());
+  R = { lv, qs: pool.slice(0, Math.min(S.count, pool.length)), i:0, hearts:3,
+        streak:0, best:0, correct:0, xp:0, coins:0, misses:[], answered:false, hintUsed:false, tid:null };
+  document.documentElement.style.setProperty('--hue', levelMeta(lv).c);
+  show('game');
+  loadQ();
+}
+
+function loadQ(){
+  if(R.i >= R.qs.length) return endRun('clear');
+  const q = R.qs[R.i];
+  R.answered = false; R.hintUsed = false;
+
+  el('qCount').textContent = (R.i+1) + '/' + R.qs.length;
+  el('trackFill').style.width = (R.i / R.qs.length * 100) + '%';
+  el('hearts').innerHTML = [0,1,2].map(n=>'<span class="'+(n<R.hearts?'on':'')+'">❤</span>').join('');
+  el('catTag').textContent = q.lv + ' · ' + q.cat;
+  el('feedback').textContent = ''; el('feedback').className = 'feedback';
+
+  const tight = /[-]$/.test(q.p1);
+  const left  = q.p1 ? esc(q.p1) + (tight?'':' ') : '';
+  const right = q.p2 ? (/^[.,!?;:]/.test(q.p2) ? esc(q.p2) : ' ' + esc(q.p2)) : '';
+  el('sentence').innerHTML = left + '<span class="slot" id="slot">&nbsp;&nbsp;&nbsp;</span>' + right;
+
+  renderHints();
+  renderAnswerZone();
+  updateCombo();
+  startTimer();
+}
+
+function renderHints(){
+  const box = el('hints'); box.innerHTML = '';
+  HINTS.forEach(h=>{
+    const b = document.createElement('button');
+    b.className = 'hint' + (S.coins < h.cost ? ' used' : '');
+    b.innerHTML = '<b>'+h.icon+'</b>'+h.label+'<br><small>◈ '+h.cost+'</small>';
+    b.addEventListener('click', ()=>useHint(h, b));
+    box.appendChild(b);
+  });
+}
+
+function useHint(h, btn){
+  if(R.answered) return;
+  if(S.coins < h.cost){ buzz(30); toast('Not enough coins'); return; }
+  S.coins -= h.cost; save(); R.hintUsed = true;
+  btn.classList.add('used'); sfx.coin(); buzz(12);
+  const q = R.qs[R.i], slot = el('slot');
+
+  if(h.k === 'len'){
+    slot.textContent = '_'.repeat(q.ans.length);
+    el('feedback').textContent = q.ans.length + ' letters';
+  }
+  if(h.k === 'first'){
+    slot.textContent = q.ans[0] + '_'.repeat(Math.max(0,q.ans.length-1));
+    el('feedback').textContent = 'Starts with "' + q.ans[0].toUpperCase() + '"';
+  }
+  if(h.k === 'half'){
+    if(S.mode === 'tap'){
+      const wrong = [...document.querySelectorAll('.tile')].filter(t=>norm(t.dataset.w)!==norm(q.ans));
+      shuffle(wrong).slice(0, Math.max(0, wrong.length-2)).forEach(t=>t.classList.add('gone'));
+    } else {
+      const opts = shuffle([q.ans, ...distractors(q,2)]);
+      el('feedback').innerHTML = 'One of these: <b>' + opts.map(esc).join(' / ') + '</b>';
+    }
+  }
+}
+
+function distractors(q,n){
+  const bad = new Set([norm(q.ans), ...q.alts]);
+  const uniq = [...new Set(QS[q.lv].map(x=>x.ans))].filter(a=>!bad.has(norm(a)));
+  uniq.sort((a,b)=>Math.abs(a.length-q.ans.length)-Math.abs(b.length-q.ans.length));
+  return shuffle(uniq.slice(0, Math.min(20, uniq.length))).slice(0,n);
+}
+
+function renderAnswerZone(){
+  const zone = el('answerZone'), q = R.qs[R.i];
+  zone.innerHTML = '';
+  if(S.mode === 'tap'){
+    const words = shuffle([q.ans, ...distractors(q,5)]);
+    const wrap = document.createElement('div'); wrap.className = 'tiles';
+    words.forEach(w=>{
+      const t = document.createElement('button');
+      t.className = 'tile'; t.textContent = w; t.dataset.w = w;
+      t.addEventListener('click', ()=>{ if(R.answered) return; sfx.tap(); submit(w, t); });
+      wrap.appendChild(t);
+    });
+    zone.appendChild(wrap);
+    el('actionBtn').textContent = 'Skip · costs a heart';
+  } else {
+    const box = document.createElement('div'); box.className = 'typebox';
+    box.innerHTML = '<input id="gap" type="text" placeholder="type the missing word" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="go">';
+    zone.appendChild(box);
+    const inp = el('gap');
+    inp.addEventListener('input', ()=>{ const s=el('slot'); s.textContent = inp.value || '\u00a0\u00a0\u00a0'; s.classList.toggle('filled', !!inp.value); });
+    inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); submit(inp.value); } });
+    setTimeout(()=>inp.focus(), 120);
+    el('actionBtn').textContent = 'Check';
+  }
+}
+
+/* ---- timer ---- */
+function startTimer(){
+  stopTimer();
+  if(!S.timed){ return; }
+  R.tleft = 15;
+  el('combo').classList.add('on');
+  R.tid = setInterval(()=>{
+    R.tleft -= 0.1;
+    el('comboBar').style.width = Math.max(0, R.tleft/15*100) + '%';
+    el('comboBar').style.background = R.tleft < 5 ? 'var(--rose)' : 'var(--gold)';
+    if(R.tleft <= 0){ stopTimer(); if(!R.answered) submit('\u0000'); }
+  }, 100);
+}
+function stopTimer(){ if(R && R.tid){ clearInterval(R.tid); R.tid = null; } }
+
+function updateCombo(){
+  const c = el('combo'), m = multFor(R.streak);
+  if(S.timed){ c.classList.add('on'); el('comboX').textContent = '⚡ x' + m; return; }
+  if(R.streak >= 2){
+    c.classList.add('on');
+    el('comboX').textContent = '⚡ x' + m + ' · ' + R.streak;
+    const nextAt = m===1?3 : m===2?5 : m===3?8 : R.streak;
+    el('comboBar').style.background = 'var(--gold)';
+    el('comboBar').style.width = Math.min(100, R.streak/nextAt*100) + '%';
+  } else c.classList.remove('on');
+}
+
+/* ---- answering ---- */
+const PRAISE = ['Nice','Exactly','Got it','Clean','Spot on','Yes'];
+function submit(val, tileEl){
+  if(R.answered) return;
+  R.answered = true; stopTimer();
+  const q = R.qs[R.i], slot = el('slot');
+  const ok = norm(val) === norm(q.ans) || q.alts.includes(norm(val));
+  const fb = el('feedback');
+
+  if(ok){
+    R.correct++; R.streak++; R.best = Math.max(R.best, R.streak);
+    const m = multFor(R.streak);
+    const gain = Math.round(10 * m * (R.hintUsed ? .5 : 1));
+    R.xp += gain; R.coins += 3;
+    slot.textContent = q.ans; slot.className = 'slot filled good';
+    if(tileEl) tileEl.classList.add('pick-good');
+    fb.innerHTML = PRAISE[Math.floor(Math.random()*PRAISE.length)] + ' · <b>+' + gain + ' XP</b>' + (m>1 ? ' ⚡x'+m : '');
+    sfx.good(m); buzz(14);
+    updateCombo();
+    next(900);
+  } else {
+    R.hearts--; R.streak = 0;
+    R.misses.push(q);
+    slot.textContent = q.ans; slot.className = 'slot filled bad';
+    if(tileEl) tileEl.classList.add('pick-bad');
+    fb.className = 'feedback bad';
+    fb.innerHTML = (val==='\u0000' ? 'Time. ' : '') + 'Answer: <b>' + esc(q.ans) + '</b>';
+    sfx.bad(); buzz([25,60,25]);
+    el('hearts').innerHTML = [0,1,2].map(n=>'<span class="'+(n<R.hearts?'on':'')+'">❤</span>').join('');
+    updateCombo();
+    if(R.hearts <= 0){ setTimeout(()=>endRun('out'), 1400); return; }
+    next(1900);
+  }
+  el('actionBtn').textContent = 'Next';
+}
+let nextT;
+function next(ms){
+  clearTimeout(nextT);
+  nextT = setTimeout(()=>{ R.i++; loadQ(); }, ms);
+}
+
+/* =====================================================================
+   RESULTS
+   ===================================================================== */
+function endRun(reason){
+  stopTimer(); clearTimeout(nextT);
+  const served = reason==='out' ? R.i+1 : R.qs.length;
+  const acc = served ? R.correct/served : 0;
+  const stars = reason==='out' ? 0 : acc>=1 ? 3 : acc>=.85 ? 2 : acc>=.7 ? 1 : 0;
+
+  const before = levelInfo(S.xp).lv;
+  let bonus = 0;
+  if(stars===3){ bonus = 25; }
+  S.xp += R.xp; S.coins += R.coins + bonus;
+  S.best[R.lv] = Math.max(S.best[R.lv]||0, acc);
+
+  const idx = LEVELS.findIndex(l=>l.id===R.lv);
+  const nextLv = LEVELS[idx+1];
+  let justUnlocked = false;
+  if(nextLv && acc >= .7 && reason==='clear' && !S.unlocked[nextLv.id]){
+    S.unlocked[nextLv.id] = true; justUnlocked = true;
+  }
+  save();
+
+  const after = levelInfo(S.xp).lv;
+  el('bigStars').innerHTML = [0,1,2].map(n=>'<span class="'+(n<stars?'on':'')+'">★</span>').join('');
+  el('resTitle').textContent = reason==='out' ? 'Out of hearts' : stars===3 ? 'Perfect run' : stars>0 ? 'Level clear' : 'Run finished';
+  el('resSub').textContent = R.lv + ' · ' + R.correct + ' of ' + served + ' correct' + (bonus? ' · +'+bonus+' bonus coins':'');
+  el('stAcc').textContent = Math.round(acc*100) + '%';
+  el('stXp').textContent = '+' + R.xp;
+  el('stStreak').textContent = R.best;
+
+  const rev = el('review'); rev.innerHTML = '';
+  el('reviewLabel').style.display = R.misses.length ? 'block' : 'none';
+  R.misses.slice(0,10).forEach(q=>{
+    const d = document.createElement('div');
+    d.className = 'review-item';
+    const tight = /[-]$/.test(q.p1);
+    d.innerHTML = esc(q.p1) + (tight?'':' ') + '<b>' + esc(q.ans) + '</b>' + (/^[.,!?;:]/.test(q.p2)?'':' ') + esc(q.p2);
+    rev.appendChild(d);
+  });
+  if(!R.misses.length){
+    rev.innerHTML = '<div class="review-item" style="border-left-color:var(--mint)">Nothing missed. Try the next level or turn the timer on in settings.</div>';
+  }
+
+  const again = el('againBtn');
+  if(justUnlocked){ again.textContent = 'Start ' + nextLv.id; again.dataset.lv = nextLv.id; }
+  else { again.textContent = 'Play again'; again.dataset.lv = R.lv; }
+
+  show('results');
+  if(reason==='out'){ sfx.over(); buzz([40,80,40]); }
+  else { sfx.up(); buzz(20); }
+  if(justUnlocked) setTimeout(()=>toast(nextLv.id + ' unlocked'), 700);
+  if(after > before) setTimeout(()=>toast('Level ' + after + ' · ' + RANKS[Math.min(RANKS.length-1,Math.floor((after-1)/3))]), justUnlocked?2400:700);
+}
+
+/* =====================================================================
+   SETTINGS + WIRING
+   ===================================================================== */
+function renderSettings(){
+  const seg = el('segCount'); seg.innerHTML = '';
+  [5,10,15,25].forEach(n=>{
+    const b = document.createElement('button');
+    b.textContent = n; if(S.count===n) b.classList.add('on');
+    b.addEventListener('click', ()=>{ S.count=n; save(); renderSettings(); sfx.tap(); });
+    seg.appendChild(b);
+  });
+  document.querySelectorAll('#segMode button').forEach(b=>{
+    b.classList.toggle('on', S.mode===b.dataset.mode);
+    b.onclick = ()=>{ S.mode = b.dataset.mode; save(); renderSettings(); sfx.tap(); };
+  });
+  document.querySelectorAll('.sw').forEach(sw=>{
+    sw.classList.toggle('on', !!S[sw.dataset.set]);
+    sw.onclick = ()=>{ S[sw.dataset.set] = !S[sw.dataset.set]; save(); renderSettings(); renderHome(); buzz(10); };
+  });
+}
+
+el('openSettings').addEventListener('click', ()=>{ renderSettings(); el('sheetWrap').classList.add('on'); });
+el('closeSheet').addEventListener('click', ()=>el('sheetWrap').classList.remove('on'));
+el('scrim').addEventListener('click', ()=>el('sheetWrap').classList.remove('on'));
+el('resetBtn').addEventListener('click', ()=>{
+  if(el('resetBtn').dataset.armed){ S = Object.assign({}, DEFAULTS, {mode:S.mode}); save(); el('resetBtn').textContent='Reset all progress'; delete el('resetBtn').dataset.armed; el('sheetWrap').classList.remove('on'); renderHome(); toast('Progress cleared'); }
+  else { el('resetBtn').dataset.armed = '1'; el('resetBtn').textContent = 'Tap again to confirm'; }
+});
+
+el('quickPlay').addEventListener('click', ()=>{ sfx.tap(); startRun(highestOpen()); });
+el('quitBtn').addEventListener('click', ()=>{ stopTimer(); clearTimeout(nextT); renderHome(); show('home'); });
+el('homeBtn').addEventListener('click', ()=>{ renderHome(); show('home'); });
+el('againBtn').addEventListener('click', e=>{ startRun(e.currentTarget.dataset.lv || 'A1'); });
+el('actionBtn').addEventListener('click', ()=>{
+  if(R.answered){ clearTimeout(nextT); R.i++; loadQ(); return; }
+  if(S.mode === 'type'){ const i = el('gap'); submit(i ? i.value : ''); }
+  else submit('\u0000');
+});
+
+document.addEventListener('gesturestart', e=>e.preventDefault());
+window.addEventListener('touchstart', function once(){ tone(1,0.01,'sine',0.0001,0); window.removeEventListener('touchstart', once); }, {passive:true});
+
+renderHome();
+</script>
+</body>
+</html>

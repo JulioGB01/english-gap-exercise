@@ -1,53 +1,51 @@
 /* =====================================================================
    HOME SCREEN
-   All levels are always open — no locking/progression gate.
+   Switch-style tile grid. All levels are always open.
    ===================================================================== */
 import { LEVELS } from './data.js';
+import { QS, levelMeta, starsFor } from './questions.js';
 import { S } from './state.js';
 import { el } from './dom.js';
-import { levelInfo, levelMeta, RANKS } from './questions.js';
 import { sfx } from './audio.js';
 import { startRun } from './game.js';
 
-/* "Continue" jumps to the first level the player hasn't cleared yet (70%+),
-   purely as a suggestion — every level is playable directly from the list. */
-export function highestOpen() {
-  let h = LEVELS[0].id;
+/* "Continue" suggests the first level not yet cleared at 70%+. */
+export function suggestedLevel() {
   for (const L of LEVELS) {
-    h = L.id;
-    if ((S.best[L.id] || 0) < .7) break;
+    if ((S.best[L.id] || 0) < .7) return L.id;
   }
-  return h;
+  return LEVELS[LEVELS.length - 1].id;
 }
 
 export function renderHome() {
-  const info = levelInfo(S.xp);
-  el('rankLv').textContent = info.lv;
-  el('rankName').textContent = RANKS[Math.min(RANKS.length - 1, Math.floor((info.lv - 1) / 3))] + ' · ' + info.rem + '/' + info.need + ' XP';
-  el('xpFill').style.width = Math.round(info.rem / info.need * 100) + '%';
-  el('coinCount').textContent = S.coins;
+  const cleared = LEVELS.filter(L => (S.best[L.id] || 0) >= .7).length;
+  el('clearedCount').textContent = cleared + ' / ' + LEVELS.length + ' levels cleared';
 
   const list = el('levelList');
   list.innerHTML = '';
   LEVELS.forEach(L => {
     const best = S.best[L.id] || 0;
-    const stars = best >= 1 ? 3 : best >= .85 ? 2 : best >= .7 ? 1 : 0;
+    const stars = starsFor(best);
     const b = document.createElement('button');
     b.className = 'lvl';
     b.style.setProperty('--c', L.c);
     b.innerHTML =
-      '<div class="lvl-code">' + L.id + '</div>' +
-      '<div class="lvl-body">' +
-        '<div class="lvl-name">' + L.name + '</div>' +
-        '<div class="lvl-sub">' + L.sub + '</div>' +
-        '<div class="stars"><span class="' + (stars > 0 ? 'on' : '') + '">★</span><span class="' + (stars > 1 ? 'on' : '') + '">★</span><span class="' + (stars > 2 ? 'on' : '') + '">★</span></div>' +
-      '</div>' +
-      '<div class="lvl-go">▶</div>';
+      '<span class="lvl-code">' + L.id + '</span>' +
+      '<span class="lvl-name">' + L.name + '</span>' +
+      '<span class="lvl-sub">' + L.sub + '</span>' +
+      '<span class="lvl-foot">' +
+        '<span class="stars">' +
+          '<span class="' + (stars > 0 ? 'on' : '') + '">★</span>' +
+          '<span class="' + (stars > 1 ? 'on' : '') + '">★</span>' +
+          '<span class="' + (stars > 2 ? 'on' : '') + '">★</span>' +
+        '</span>' +
+        '<span class="lvl-count">' + QS[L.id].length + ' lines</span>' +
+      '</span>';
     b.addEventListener('click', () => { sfx.tap(); startRun(L.id); });
     list.appendChild(b);
   });
 
-  const next = highestOpen();
+  const next = suggestedLevel();
   el('quickPlay').textContent = 'Continue · ' + next;
-  document.documentElement.style.setProperty('--hue', levelMeta(next).c);
+  document.documentElement.style.setProperty('--accent', levelMeta(next).c);
 }

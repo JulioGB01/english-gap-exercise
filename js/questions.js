@@ -20,25 +20,28 @@ for (const lv in BANK) {
   }
 }
 
-export const RANKS = ["Newcomer", "Learner", "Speaker", "Storyteller", "Wordsmith", "Native-ish"];
-
 export const norm = s => String(s).toLowerCase().replace(/[’‘]/g, "'").replace(/[.,!?;:]+$/, '').trim().replace(/\s+/g, ' ');
 export const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 export const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1));[a[i], a[j]] = [a[j], a[i]]; } return a; };
 
 export const levelMeta = id => LEVELS.find(l => l.id === id);
 
-export function levelInfo(xp) {
-  let lv = 1, need = 120, rem = xp;
-  while (rem >= need) { rem -= need; lv++; need = Math.round(need * 1.22); }
-  return { lv, rem, need };
-}
+/* Stars from best accuracy: 3 = flawless, 2 = 85%+, 1 = 70%+ */
+export const starsFor = acc => acc >= 1 ? 3 : acc >= .85 ? 2 : acc >= .7 ? 1 : 0;
 
-export function multFor(streak) { return streak >= 8 ? 4 : streak >= 5 ? 3 : streak >= 3 ? 2 : 1; }
-
+/* Wrong-answer tiles: other answers from the same level, biased toward
+   similar length so the choice is not given away by shape alone. */
 export function distractors(q, n) {
   const bad = new Set([norm(q.ans), ...q.alts]);
   const uniq = [...new Set(QS[q.lv].map(x => x.ans))].filter(a => !bad.has(norm(a)));
   uniq.sort((a, b) => Math.abs(a.length - q.ans.length) - Math.abs(b.length - q.ans.length));
   return shuffle(uniq.slice(0, Math.min(20, uniq.length))).slice(0, n);
+}
+
+/* Renders a question into HTML, with `gapHtml` dropped into the blank. */
+export function renderSentence(q, gapHtml) {
+  const tight = /[-]$/.test(q.p1);
+  const left = q.p1 ? esc(q.p1) + (tight ? '' : ' ') : '';
+  const right = q.p2 ? (/^[.,!?;:]/.test(q.p2) ? esc(q.p2) : ' ' + esc(q.p2)) : '';
+  return left + gapHtml + right;
 }

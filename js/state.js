@@ -1,7 +1,7 @@
 /* =====================================================================
    STATE
-   Persistent player state: XP, coins, best scores, settings.
-   All levels are unlocked by default — there is no lock/progression gate.
+   Persistent player state: best accuracy per level + preferences.
+   No XP, no coins, no locks — every level is open from the start.
    ===================================================================== */
 
 /* ---- storage: uses localStorage when available, memory otherwise ---- */
@@ -21,24 +21,27 @@ export const Store = {
 };
 
 export const DEFAULTS = {
-  xp: 0,
-  coins: 60,
-  best: {},
-  count: 10,
-  mode: null,
-  timed: false,
+  best: {},      // levelId -> best accuracy 0..1
+  count: 10,     // questions per run
+  mode: null,    // 'tap' | 'type'
   sound: true,
   haptics: true
 };
 
-export let S = Object.assign({}, DEFAULTS, Store.get('wordflow', {}));
+/* Fresh copy every time — `best` must never share a reference with
+   DEFAULTS, or playing a run would permanently mutate the defaults and
+   "Reset all progress" would leave old scores behind. */
+const fresh = () => Object.assign({}, DEFAULTS, { best: {} });
+
+export let S = Object.assign(fresh(), Store.get('wordflow', {}));
+S.best = Object.assign({}, S.best);
 
 const isTouch = ('ontouchstart' in window) || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
-if (!S.mode) S.mode = isTouch ? 'tap' : 'type';
+if (S.mode !== 'tap' && S.mode !== 'type') S.mode = isTouch ? 'tap' : 'type';
 
 export function save() { Store.set('wordflow', S); }
 
 export function resetProgress() {
-  S = Object.assign({}, DEFAULTS, { mode: S.mode });
+  S = Object.assign(fresh(), { mode: S.mode });
   save();
 }
