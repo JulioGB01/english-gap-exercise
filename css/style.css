@@ -1,7 +1,7 @@
 /* =====================================================================
    WORDFLOW — Switch-style dark theme
    Charcoal surfaces, neon per-level accents, white selection rings.
-   Screenplay (Courier) treatment for the dialogue card.
+   Monospace (Courier) treatment for the sentence card.
    ===================================================================== */
 :root{
   --bg:#0E1014;
@@ -96,11 +96,6 @@ button{border:0;background:none;cursor:pointer}
 .hero{padding:6px 2px 0}
 .hero h1{font-size:clamp(30px,8.5vw,40px);line-height:1.02;font-weight:900;letter-spacing:-.035em}
 .hero p{margin-top:8px;font-size:14px;color:var(--muted);line-height:1.5}
-.cleared{
-  display:inline-block;margin-top:12px;padding:6px 12px;border-radius:99px;
-  background:var(--surface);border:1px solid var(--line);
-  font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);
-}
 
 /* ---------- level tiles (Switch home menu) ---------- */
 .level-grid{
@@ -126,8 +121,7 @@ button{border:0;background:none;cursor:pointer}
 .lvl-name{font-size:14px;font-weight:800;letter-spacing:-.01em}
 .lvl-sub{font-size:11.5px;color:var(--muted);line-height:1.45;flex:1}
 .lvl-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
-.stars{display:flex;gap:2px;font-size:12px;color:var(--surface-3)}
-.stars .on{color:var(--gold)}
+.lvl-done{font-size:10px;font-weight:800;letter-spacing:.04em;color:var(--c);opacity:.9}
 .lvl-count{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--muted);opacity:.8}
 
 /* ---------- primary button ---------- */
@@ -149,11 +143,8 @@ button{border:0;background:none;cursor:pointer}
 .track{flex:1;height:7px;border-radius:99px;background:var(--surface-2);overflow:hidden}
 .track i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .32s ease}
 .qcount{font-size:12px;font-weight:800;color:var(--muted);min-width:46px;text-align:right;font-variant-numeric:tabular-nums}
-.hearts{display:flex;gap:3px;font-size:15px;line-height:1}
-.hearts span{color:var(--surface-3);transition:color .25s, transform .25s}
-.hearts span.on{color:var(--red)}
 
-/* ---------- the dialogue slate ---------- */
+/* ---------- the sentence slate ---------- */
 .slate{
   flex:1;min-height:0;display:flex;flex-direction:column;gap:14px;
   padding:22px 18px;border-radius:var(--r-lg);
@@ -165,7 +156,7 @@ button{border:0;background:none;cursor:pointer}
   background:linear-gradient(90deg,var(--accent),transparent);
 }
 .slate-head{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:22px}
-.scene-tag{
+.topic-tag{
   font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
 }
 .streak{
@@ -241,10 +232,8 @@ button{border:0;background:none;cursor:pointer}
 .typebox input::placeholder{color:var(--muted);font-weight:500}
 
 /* ---------- results ---------- */
-.result-head{text-align:center;padding:14px 0 4px}
-.big-stars{font-size:36px;letter-spacing:8px;color:var(--surface-3);line-height:1}
-.big-stars .on{color:var(--gold)}
-.result-title{font-size:27px;font-weight:900;letter-spacing:-.025em;margin-top:14px}
+.result-head{text-align:center;padding:20px 0 4px}
+.result-title{font-size:27px;font-weight:900;letter-spacing:-.025em}
 .result-sub{font-size:13.5px;color:var(--muted);margin-top:6px}
 .grid-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
 .stat{
@@ -284,6 +273,7 @@ button{border:0;background:none;cursor:pointer}
   text-transform:uppercase;color:var(--muted);margin-bottom:9px;
 }
 .note{margin-top:9px;font-size:12px;color:var(--muted);line-height:1.5}
+.sheet>.note{margin-top:6px}
 .seg{display:flex;gap:6px}
 .seg button{
   flex:1;padding:12px 4px;border-radius:var(--r-sm);
@@ -293,6 +283,23 @@ button{border:0;background:none;cursor:pointer}
 }
 .seg button:hover{color:var(--text)}
 .seg button.on{background:var(--text);color:#0B0D11}
+
+/* ---------- two-icon mode picker (run setup) ---------- */
+.picker{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.picker button{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:20px 10px 16px;border-radius:var(--r-md);
+  background:var(--surface-2);border:1.5px solid transparent;
+  font-weight:800;font-size:13px;color:var(--muted);
+  transition:background .18s, color .18s, border-color .18s, transform .12s;
+}
+.picker button:hover{color:var(--text);background:var(--surface-3)}
+.picker button:active{transform:scale(.97)}
+.picker button.on{
+  background:color-mix(in srgb, var(--accent) 14%, var(--surface-2));
+  border-color:var(--accent);color:var(--text);
+}
+.picker button.on svg{color:var(--accent)}
 .toggle-row{
   display:flex;align-items:center;justify-content:space-between;gap:14px;
   padding:13px 0;border-bottom:1px solid var(--line);

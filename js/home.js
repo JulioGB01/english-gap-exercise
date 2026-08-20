@@ -1,31 +1,28 @@
 /* =====================================================================
    HOME SCREEN
-   Switch-style tile grid. All levels are always open.
+   Switch-style tile grid. Every level is always open and there is
+   nothing to clear — the tiles just show how much you have practised.
    ===================================================================== */
 import { LEVELS } from './data.js';
-import { QS, levelMeta, starsFor } from './questions.js';
+import { QS } from './questions.js';
 import { S } from './state.js';
 import { el } from './dom.js';
 import { sfx } from './audio.js';
-import { startRun } from './game.js';
+import { openSetup } from './setup.js';
 
-/* "Continue" suggests the first level not yet cleared at 70%+. */
-export function suggestedLevel() {
-  for (const L of LEVELS) {
-    if ((S.best[L.id] || 0) < .7) return L.id;
-  }
-  return LEVELS[LEVELS.length - 1].id;
+/* The home CTA offers the level you practised last, or the first one. */
+export function lastLevel() {
+  return LEVELS.some(L => L.id === S.last) ? S.last : LEVELS[0].id;
 }
 
 export function renderHome() {
-  const cleared = LEVELS.filter(L => (S.best[L.id] || 0) >= .7).length;
-  el('clearedCount').textContent = cleared + ' / ' + LEVELS.length + ' levels cleared';
-
   const list = el('levelList');
   list.innerHTML = '';
   LEVELS.forEach(L => {
-    const best = S.best[L.id] || 0;
-    const stars = starsFor(best);
+    const t = S.stats[L.id];
+    const done = t && t.seen
+      ? Math.round(t.correct / t.seen * 100) + '% of ' + t.seen
+      : 'not yet practised';
     const b = document.createElement('button');
     b.className = 'lvl';
     b.style.setProperty('--c', L.c);
@@ -34,18 +31,14 @@ export function renderHome() {
       '<span class="lvl-name">' + L.name + '</span>' +
       '<span class="lvl-sub">' + L.sub + '</span>' +
       '<span class="lvl-foot">' +
-        '<span class="stars">' +
-          '<span class="' + (stars > 0 ? 'on' : '') + '">★</span>' +
-          '<span class="' + (stars > 1 ? 'on' : '') + '">★</span>' +
-          '<span class="' + (stars > 2 ? 'on' : '') + '">★</span>' +
-        '</span>' +
+        '<span class="lvl-done">' + done + '</span>' +
         '<span class="lvl-count">' + QS[L.id].length + ' lines</span>' +
       '</span>';
-    b.addEventListener('click', () => { sfx.tap(); startRun(L.id); });
+    b.addEventListener('click', () => { sfx.tap(); openSetup(L.id); });
     list.appendChild(b);
   });
 
-  const next = suggestedLevel();
-  el('quickPlay').textContent = 'Continue · ' + next;
-  document.documentElement.style.setProperty('--accent', levelMeta(next).c);
+  const lv = lastLevel();
+  el('quickPlay').textContent = 'Practise · ' + lv;
+  document.documentElement.style.setProperty('--accent', LEVELS.find(l => l.id === lv).c);
 }

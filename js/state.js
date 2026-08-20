@@ -1,7 +1,8 @@
 /* =====================================================================
    STATE
-   Persistent player state: best accuracy per level + preferences.
-   No XP, no coins, no locks — every level is open from the start.
+   Persistent player state: practice tallies per level + preferences.
+   No XP, no coins, no locks, no levels to clear — every level is just a
+   difficulty band you can practise as often as you like.
    ===================================================================== */
 
 /* ---- storage: uses localStorage when available, memory otherwise ---- */
@@ -21,27 +22,39 @@ export const Store = {
 };
 
 export const DEFAULTS = {
-  best: {},      // levelId -> best accuracy 0..1
-  count: 10,     // questions per run
-  mode: null,    // 'tap' | 'type'
+  stats: {},     // levelId -> { seen, correct } — a running practice tally
+  last: null,    // last level practised, so the home CTA can offer it again
+  count: 10,     // lines per run — remembered only as the pre-selected default
+  mode: null,    // 'tap' | 'type' — likewise, asked again before every run
   sound: true,
   haptics: true
 };
 
-/* Fresh copy every time — `best` must never share a reference with
+/* Fresh copy every time — `stats` must never share a reference with
    DEFAULTS, or playing a run would permanently mutate the defaults and
-   "Reset all progress" would leave old scores behind. */
-const fresh = () => Object.assign({}, DEFAULTS, { best: {} });
+   "Reset all progress" would leave old tallies behind. */
+const fresh = () => Object.assign({}, DEFAULTS, { stats: {} });
 
 export let S = Object.assign(fresh(), Store.get('wordflow', {}));
-S.best = Object.assign({}, S.best);
+S.stats = Object.assign({}, S.stats);
 
 const isTouch = ('ontouchstart' in window) || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches);
 if (S.mode !== 'tap' && S.mode !== 'type') S.mode = isTouch ? 'tap' : 'type';
 
 export function save() { Store.set('wordflow', S); }
 
+/* Records one finished run against the level's running tally. */
+export function tally(lv, seen, correct) {
+  const t = S.stats[lv] || { seen: 0, correct: 0 };
+  S.stats[lv] = { seen: t.seen + seen, correct: t.correct + correct };
+  save();
+}
+
+/* Clears the tallies but keeps the sound/vibration preferences, since
+   those are settings rather than progress. */
 export function resetProgress() {
-  S = Object.assign(fresh(), { mode: S.mode });
+  S = Object.assign(fresh(), {
+    mode: S.mode, count: S.count, sound: S.sound, haptics: S.haptics
+  });
   save();
 }

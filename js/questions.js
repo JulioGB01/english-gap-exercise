@@ -26,8 +26,10 @@ export const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j =
 
 export const levelMeta = id => LEVELS.find(l => l.id === id);
 
-/* Stars from best accuracy: 3 = flawless, 2 = 85%+, 1 = 70%+ */
-export const starsFor = acc => acc >= 1 ? 3 : acc >= .85 ? 2 : acc >= .7 ? 1 : 0;
+/* How many lines a chosen run length yields for a level. 'all' means the
+   level's whole bank; a number is capped at what the bank actually holds. */
+export const runLength = (lv, n) =>
+  n === 'all' ? QS[lv].length : Math.min(n, QS[lv].length);
 
 /* Wrong-answer tiles: other answers from the same level, biased toward
    similar length so the choice is not given away by shape alone. */

@@ -1,31 +1,14 @@
 /* =====================================================================
    SETTINGS SHEET
+   Sound, vibration and reset only. How you answer and how long a run is
+   are asked before every run instead — see setup.js.
    ===================================================================== */
 import { S, save, resetProgress } from './state.js';
 import { el, toast } from './dom.js';
-import { sfx, buzz } from './audio.js';
+import { buzz } from './audio.js';
 import { renderHome } from './home.js';
 
 export function renderSettings() {
-  const seg = el('segCount');
-  seg.innerHTML = '';
-  [5, 10, 15, 25].forEach(n => {
-    const b = document.createElement('button');
-    b.textContent = n;
-    b.className = S.count === n ? 'on' : '';
-    b.addEventListener('click', () => { S.count = n; save(); renderSettings(); sfx.tap(); });
-    seg.appendChild(b);
-  });
-
-  document.querySelectorAll('#segMode button').forEach(b => {
-    b.classList.toggle('on', S.mode === b.dataset.mode);
-    b.onclick = () => { S.mode = b.dataset.mode; save(); renderSettings(); sfx.tap(); };
-  });
-
-  el('modeNote').textContent = S.mode === 'type'
-    ? 'Keyboard mode gives you one first-letter hint per line.'
-    : 'Word tiles mode has no hints — pick from six options.';
-
   document.querySelectorAll('.sw').forEach(sw => {
     const on = !!S[sw.dataset.set];
     sw.classList.toggle('on', on);

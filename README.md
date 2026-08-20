@@ -1,25 +1,20 @@
 # Wordflow — English Gap Trainer
 
-Fill the missing word in a line of film dialogue. Six levels, A1 to C2, 648 lines of original screenplay-style writing.
+Fill in the missing word. Six levels, A1 to C2, 648 original sentences grouped by grammar topic. Unlimited practice — there is nothing to unlock and nothing to beat.
 
 **Live:** https://juliogb01.github.io/english-gap-exercise/
 
 ## How it plays
 
-- Pick any level — all six are open from the start, no unlocking.
-- Each run serves a set number of lines (5 / 10 / 15 / 25, in Settings).
-- Answer with **word tiles** (pick from six) or the **keyboard** (type it).
+- Pick any level — the six levels are difficulty bands, not stages to clear.
+- Every time you pick one, you're asked two things before the run starts:
+  - **How to answer** — word tiles (pick from six) or the keyboard (type it).
+  - **How many lines** — 5 / 10 / 15 / 25, or the level's whole bank.
 - Keyboard mode gives you exactly one hint per line: reveal the first letter.
-- Three hearts. A wrong answer costs one. Lose all three and the run ends.
-- Stars per level are based on your best accuracy: 3 stars = flawless, 2 = 85%, 1 = 70%.
+- A wrong answer just shows you the word and moves on. No lives, no failing.
+- Settings holds sound, vibration and reset only.
 
 Anything you missed is listed at the end of the run with the answer filled in.
-
-## Publishing changes
-
-Double-click **`push.bat`**. It stages everything, commits, and pushes to `main`; GitHub Pages redeploys about a minute later. On the very first run it initialises the repo and may open a browser window to sign you in to GitHub.
-
-You can pass a commit message: `push.bat Added more C1 idioms`.
 
 ## Play locally
 
@@ -36,20 +31,20 @@ Then open `http://localhost:PORT/`.
 ## Project structure
 
 ```
-index.html          Markup for the home / game / results screens and settings sheet
-push.bat            One-click commit + push to GitHub
+index.html          Markup for the home / game / results screens and both sheets
 css/
-  style.css         All styling — Switch-style dark theme, screenplay dialogue card
+  style.css         All styling — Switch-style dark theme, monospace sentence card
 js/
   data.js           The sentence bank (BANK) and the level list (LEVELS)
-  state.js          Persistent state (best accuracy, preferences) + localStorage wrapper
+  state.js          Persistent state (practice tallies, preferences) + localStorage wrapper
   questions.js      Flattens the bank into per-level lists; answer matching, distractors
   audio.js          Sound effects (WebAudio) and haptics
   dom.js            Screen switching and toasts
   home.js           The level tile grid
-  game.js           The run engine: question flow, hint, hearts, scoring
-  results.js        Scores a finished run and renders the results screen
-  settings.js       Settings sheet
+  setup.js          The pre-run sheet: answer mode and run length
+  game.js           The run engine: question flow, hint, scoring
+  results.js        Sums up a finished run and renders the results screen
+  settings.js       Settings sheet — sound, vibration, reset
   main.js           Entry point
 ```
 
@@ -57,7 +52,7 @@ Native ES modules (`<script type="module">`) — no bundler, no build tooling.
 
 ## Adding your own lines
 
-Open `js/data.js` and add to any category. The format is:
+Open `js/data.js` and add to any topic. The format is:
 
 ```
 "text before the gap|text after the gap|answer|alt1,alt2"
@@ -82,6 +77,6 @@ New lines are picked up on reload — nothing else to update. Wrong-answer tiles
 
 ## Notes
 
-- Progress is stored in `localStorage` under the key `wordflow`, with an in-memory fallback.
+- Practice tallies are stored in `localStorage` under the key `wordflow`, with an in-memory fallback.
 - Design is dark-mode only by intent: charcoal surfaces, a neon accent per level, white selection rings.
-- All dialogue is original writing, not transcribed from real films.
+- Every sentence is original writing.

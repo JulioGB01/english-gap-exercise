@@ -1,12 +1,12 @@
 /* =====================================================================
-   SENTENCE BANK — original screenplay-style dialogue
+   SENTENCE BANK — original sentences, grouped by grammar topic
    Format: "before the gap|after the gap|answer|alt1,alt2"
    Field 4 (alternatives) is optional.
-   Add your own lines to any category — the game picks them up on reload.
+   Add your own lines to any topic — the game picks them up on reload.
    ===================================================================== */
 export const BANK = {
 A1: {
-  "Meet the character": [
+  "To be": [
     "My name|Sarah.|is",
     "|you a police officer?|Are",
     "He|not my brother.|is",
@@ -26,7 +26,7 @@ A1: {
     "|he your husband?|Is",
     "This|a big mistake.|is"
   ],
-  "Everyday scenes": [
+  "Present simple": [
     "She|coffee every morning.|drinks|has",
     "He|to the gym every day.|goes",
     "|you know this man?|Do",
@@ -46,7 +46,7 @@ A1: {
     "|your father like me?|Does",
     "I|not need your help.|do"
   ],
-  "The apartment": [
+  "There is & articles": [
     "There|a man at the door.|is",
     "There|two cups on the table.|are",
     "This is|old apartment.|an",
@@ -66,7 +66,7 @@ A1: {
     "There|many boxes in the room.|are",
     "Is there|bathroom in this apartment?|a"
   ],
-  "Where and when": [
+  "Prepositions of place & time": [
     "The cat is hiding|the table.|under|behind",
     "I live|London.|in",
     "The party is|Friday.|on",
@@ -86,7 +86,7 @@ A1: {
     "My birthday is|July.|in",
     "The photo is|the wall.|on"
   ],
-  "First lines": [
+  "Question words": [
     "|are you?|How",
     "|is your name?|What",
     "|are you from?|Where",
@@ -106,7 +106,7 @@ A1: {
     "Take|of yourself.|care",
     "I am|sorry.|so|very"
   ],
-  "Asking and offering": [
+  "Can & have got": [
     "|you help me, please?|Can",
     "Help me! I|swim!|can't|cannot",
     "She|got a car.|has",
@@ -128,7 +128,7 @@ A1: {
   ]
 },
 A2: {
-  "Flashback": [
+  "Past simple": [
     "She|the door and ran into the rain.|opened",
     "He|the car keys on the table and never came back.|left",
     "Where|you go after the funeral?|did",
@@ -148,7 +148,7 @@ A2: {
     "They|the whole story to the police the next morning.|told",
     "I|nothing about the plan until it was too late.|knew"
   ],
-  "Rivals": [
+  "Comparatives & superlatives": [
     "You are|than you think, kid.|stronger|smarter,tougher,braver",
     "He is the richest man|this whole town, and everyone knows it.|in",
     "This plan is better|your last one, trust me.|than",
@@ -168,7 +168,7 @@ A2: {
     "Nothing is more important|the truth right now.|than",
     "She runs|than anyone else in this school.|faster"
   ],
-  "The plan": [
+  "Future forms": [
     "I|leave town tomorrow morning.|will",
     "She is|to tell him the truth tonight.|going",
     "We|meeting him at the station at six.|are",
@@ -188,7 +188,7 @@ A2: {
     "|we going to make it in time?|Are",
     "I|not forget this, ever.|will"
   ],
-  "Right now": [
+  "Present continuous": [
     "She|crying in the next room.|is",
     "|you listening to me right now?|Are",
     "We are|for the bus, and it's already late.|waiting",
@@ -208,7 +208,7 @@ A2: {
     "|she smiling? Something's wrong.|Is",
     "The phone|ringing again, answer it.|is"
   ],
-  "What's left": [
+  "Quantifiers": [
     "We don't have|time left — the train leaves in five minutes!|much|any",
     "Is there|food left in the fridge, or did you eat it all?|any|some",
     "I only have|money left, about twenty dollars.|some",
@@ -228,7 +228,7 @@ A2: {
     "Do you have|questions before we start, or are you ready?|any|some",
     "There isn't|left to say — it's over between us.|much"
   ],
-  "Street talk": [
+  "Everyday phrasal verbs": [
     "|up! We need to leave now.|Get|Wake",
     "Turn|the lights, someone's coming.|off",
     "He|off his coat and ran into the night.|took",
@@ -250,7 +250,7 @@ A2: {
   ]
 },
 B1: {
-  "The investigation": [
+  "Present perfect": [
     "I've|seen a crime scene this messy before.|never",
     "|you ever lied to a police officer, Mr. Hale?|Have",
     "The suspect has|left the building, sir.|already",
@@ -270,7 +270,7 @@ B1: {
     "The forensic team has|through every room in the house.|gone|been",
     "I've|a cop for twenty years, and I've never seen anything like this.|been"
   ],
-  "What if": [
+  "Conditionals & wishes": [
     "If you|me one more lie, I'm walking out that door.|tell",
     "If you|the alarm, security will be here in two minutes.|trigger|trip",
     "I wish I|listened to my mother.|had",
@@ -290,7 +290,7 @@ B1: {
     "If you press that button, the whole building|.|explodes",
     "I wish this|never happened.|had"
   ],
-  "Warnings and advice": [
+  "Modal verbs": [
     "You|tell him the truth before it's too late.|should",
     "You|go in there without backup.|mustn't|shouldn't",
     "We|leave now, or we'll miss our chance completely.|must|should",
@@ -310,7 +310,7 @@ B1: {
     "It|rain later, so bring an umbrella just in case.|may|might,could",
     "I|be wrong, but I think he's lying to us.|could|might"
   ],
-  "Backstory": [
+  "Relative clauses": [
     "The man|raised me wasn't my real father.|who|that",
     "This is the house|I grew up.|where",
     "She's the woman|husband disappeared ten years ago.|whose",
@@ -330,7 +330,7 @@ B1: {
     "This is the room|it all happened.|where",
     "I quit my job|I could take care of my mother.|so"
   ],
-  "Word on the street": [
+  "Phrasal verbs": [
     "Someone has to|after the kids while we're gone.|look",
     "Can you look|my little sister while I run an errand?|after",
     "They decided to|off the wedding at the last minute.|call",
@@ -350,7 +350,7 @@ B1: {
     "The whole town is trying to|out what really happened that night.|figure",
     "If it rains, they'll|off the ceremony until Sunday.|call"
   ],
-  "Feelings": [
+  "Dependent prepositions": [
     "She's really good|reading people — she knew you were lying instantly.|at",
     "He's not very good|keeping secrets, so don't tell him anything.|at",
     "I heard she's married|a man she barely knows.|to",
@@ -372,7 +372,7 @@ B1: {
   ]
 },
 B2: {
-  "The confrontation": [
+  "Collocations": [
     "You knew about this the whole time, and you just let it|.|slide",
     "Don't you dare walk out that|in the middle of this conversation.|door",
     "I'm not going to stand here and take the|for something I didn't do.|blame",
@@ -392,7 +392,7 @@ B2: {
     "Spare me the sob|and just tell me the truth.|story",
     "You're really going to stand there and deny it to my|?|face"
   ],
-  "The heist": [
+  "Phrasal verbs in context": [
     "We need to call the whole thing|before someone gets hurt.|off",
     "If we pull this|, we'll never have to work again.|off",
     "It's too late to back|now, we're already inside.|out",
@@ -412,7 +412,7 @@ B2: {
     "Don't cave|when the police start asking questions.|in",
     "If this goes south, we split up and lie|for a while.|low"
   ],
-  "Under pressure": [
+  "Adjective + preposition": [
     "I'm concerned|the way this investigation is being handled.|about|with",
     "You're the one responsible|this mess, not me.|for",
     "I thought you were committed|this family.|to",
@@ -432,7 +432,7 @@ B2: {
     "You're forbidden|discussing this case outside these walls.|from",
     "I refuse to apologize|something that wasn't my fault.|for"
   ],
-  "The courtroom": [
+  "Unreal conditionals": [
     "If I|you, I'd think very carefully before answering that question.|were|was",
     "You|better tell the truth, or this will only get worse for you.|had",
     "He acted as|he'd never seen the man before in his life.|if|though",
@@ -452,7 +452,7 @@ B2: {
     "In|the witness changes her story again, we need a backup plan.|case",
     "It's high time you|responsibility for what you did.|took"
   ],
-  "The breakup": [
+  "Past modals": [
     "I gave you my whole heart, and you just threw it|.|away",
     "I should have|you the truth a long time ago.|told",
     "We've been growing apart for a|now, and we both know it.|while",
@@ -472,7 +472,7 @@ B2: {
     "I wish I'd walked away|.|sooner",
     "It's over. I've made up my|and there's no going back.|mind"
   ],
-  "The double cross": [
+  "Idiomatic expressions": [
     "You sold me|for a bigger cut, didn't you?|out",
     "I trusted you, and you stabbed me in the|.|back",
     "He swore he'd never|on us, and look at him now.|rat|snitch",
@@ -494,7 +494,7 @@ B2: {
   ]
 },
 C1: {
-  "The boardroom": [
+  "Formal collocations": [
     "The new testimony casts serious|on everything he told the board.|doubt",
     "Say what you like about her methods, but she does bear a striking|to her mother when she negotiates.|resemblance",
     "If we push the merger through this quarter, we're going to meet fierce|from the unions.|resistance|opposition",
@@ -514,7 +514,7 @@ C1: {
     "Leaking that report to the press really raised the|.|stakes",
     "We're one signature away from closing the|.|deal"
   ],
-  "The monologue": [
+  "Inversion": [
     "Not only|he lie to my face, he smiled while he said it.|did",
     "Rarely|I seen a man so certain of his own downfall.|have",
     "No sooner had the verdict been read|the courtroom erupted.|than",
@@ -534,7 +534,7 @@ C1: {
     "Little|they suspect that the merger had already been signed.|did",
     "So convinced was he of his own innocence that he refused to|a lawyer.|hire|get,retain,call"
   ],
-  "The negotiation": [
+  "Discourse markers": [
     "By and|, this deal favors you far more than it favors us.|large",
     "That|, I'm not prepared to sign anything until my lawyer sees it.|said",
     "To some|, you're right — the timing couldn't be worse.|extent",
@@ -554,7 +554,7 @@ C1: {
     "For the most|, the terms are exactly what we asked for.|part",
     "Needless to|, the offer expires at midnight.|say"
   ],
-  "Idioms in play": [
+  "Idioms": [
     "You're barking up the wrong|.|tree",
     "Let's just play it by|and see how the meeting goes.|ear",
     "The merger's been put on the back|until the audit clears.|burner",
@@ -574,7 +574,7 @@ C1: {
     "By the time she realized it, she was already in over her|.|head",
     "Let's call it a|— we can pick this up again tomorrow.|day"
   ],
-  "The setup": [
+  "Advanced phrasal verbs": [
     "We're going to have to cut|on staff if the numbers don't improve.|back|down",
     "I won't put up|his lying anymore.|with",
     "She broke|the moment they told her the diagnosis.|down",
@@ -594,7 +594,7 @@ C1: {
     "Let's hold|on the announcement until legal clears it.|off",
     "Can we wrap|this meeting? I have somewhere to be.|up"
   ],
-  "The reckoning": [
+  "Conditional inversion": [
     "Were it|for her testimony, the whole scheme might never have unravelled.|not",
     "Had it not|for the leaked emails, he'd still be running this company.|been",
     "It later|that the signatures had been forged all along.|emerged|transpired",
@@ -616,7 +616,7 @@ C1: {
   ]
 },
 C2: {
-  "Subtle idioms": [
+  "Nuanced idioms": [
     "She won that argument hands|, and you know it.|down",
     "Even for this family, that alibi strains|.|credulity|belief",
     "He called my closing statement 'adequate' — damned with|praise if ever I heard it.|faint",
@@ -636,7 +636,7 @@ C2: {
     "His affair with the minister's wife was an open|among the staff for years.|secret",
     "Given the jury we selected, the verdict was something of a foregone|.|conclusion"
   ],
-  "The deposition": [
+  "Formal fixed expressions": [
     "Were it|for your untimely intervention, counsel, the settlement would have collapsed by noon.|not",
     "Suffice it to|, the witness's account did not survive cross-examination.|say",
     "Be that as it|, the contract remains binding until a court says otherwise.|may",
@@ -656,7 +656,7 @@ C2: {
     "It|the court to consider the full record before passing sentence.|behoves|behooves",
     "Only|did counsel realise the deposition had been recorded from the outset.|then"
   ],
-  "Cold power": [
+  "Formal register": [
     "The minister's silence only lends|to the rumours of resignation.|weight|credence",
     "She was at|to distance herself from the scandal.|pains",
     "His loyalty was, at|, negotiable.|best",
@@ -676,7 +676,7 @@ C2: {
     "Her irony was not lost|the committee.|on",
     "Such tactics are beneath|, even for him.|contempt"
   ],
-  "The eulogy": [
+  "Fixed phrases": [
     "He never asked for gratitude; by the same|, he never offered any excuses.|token",
     "For all intents and|, he raised us alone.|purposes",
     "In the final|, he judged himself far more harshly than any of us ever did.|analysis",
@@ -696,7 +696,7 @@ C2: {
     "For better or|, he was the only father I ever knew.|worse",
     "He wanted, in his own|, 'no fuss and no flowers.'|words"
   ],
-  "The interrogation": [
+  "Concessive structures": [
     "Not|I doubt your memory, Detective, but the timeline simply doesn't hold.|that",
     "If|, his account has grown more detailed with each retelling.|anything",
     "Granted|he was present, this hardly proves guilt on its own.|that",
@@ -716,7 +716,7 @@ C2: {
     "For what it's|, Detective, I never trusted him either.|worth",
     "He never admitted guilt, nor|he ever fully explain his absence that night.|did"
   ],
-  "The last word": [
+  "Emphatic expressions": [
     "This conversation is|.|over|finished,done",
     "We're|here, counsellor. Don't let the door catch you on the way out.|done|finished",
     "Consider this your only|.|warning",
@@ -740,10 +740,10 @@ C2: {
 };
 
 export const LEVELS = [
-  {id:"A1", name:"Beginner",           sub:"First scenes · to be, present simple, places",   c:"#00E5A0"},
-  {id:"A2", name:"Elementary",         sub:"Flashbacks & plans · past, future, comparatives", c:"#00C3E3"},
-  {id:"B1", name:"Intermediate",       sub:"The investigation · perfect, conditionals, modals", c:"#7B61FF"},
-  {id:"B2", name:"Upper intermediate", sub:"Confrontations · phrasal verbs, real dialogue",   c:"#FF4AC1"},
-  {id:"C1", name:"Advanced",           sub:"Boardrooms · inversion, hedging, idioms",         c:"#FF8A3D"},
-  {id:"C2", name:"Mastery",            sub:"Cold power · register, formal structures, nuance", c:"#FFD23D"}
+  {id:"A1", name:"Beginner",           sub:"To be, present simple, articles, prepositions",   c:"#00E5A0"},
+  {id:"A2", name:"Elementary",         sub:"Past, future, comparatives, quantifiers",         c:"#00C3E3"},
+  {id:"B1", name:"Intermediate",       sub:"Perfect tenses, conditionals, modals, relatives", c:"#7B61FF"},
+  {id:"B2", name:"Upper intermediate", sub:"Phrasal verbs, collocations, prepositions",       c:"#FF4AC1"},
+  {id:"C1", name:"Advanced",           sub:"Inversion, discourse markers, idioms",            c:"#FF8A3D"},
+  {id:"C2", name:"Mastery",            sub:"Formal register, fixed expressions, nuance",      c:"#FFD23D"}
 ];

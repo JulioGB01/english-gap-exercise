@@ -8,7 +8,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="Wordflow — fill the gap in a line of film dialogue. An English trainer from A1 to C2.">
+<meta name="description" content="Wordflow — fill the missing word. An unlimited English trainer from A1 to C2.">
 <title>Wordflow — English gap trainer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,15 +31,14 @@
 
   <div class="hero">
     <h1>Fill the line.</h1>
-    <p>Six levels of film dialogue, one missing word at a time.</p>
-    <span class="cleared" id="clearedCount">0 / 6 levels cleared</span>
+    <p>Six levels, one missing word at a time. Practise as long as you like — nothing to beat, nothing to unlock.</p>
   </div>
 
   <div class="scroller">
     <div class="level-grid" id="levelList"></div>
   </div>
 
-  <button class="cta" id="quickPlay">Continue</button>
+  <button class="cta" id="quickPlay">Practise</button>
 </section>
 
 <!-- ============ GAME ============ -->
@@ -50,12 +49,11 @@
     </button>
     <div class="track"><i id="trackFill" style="width:0%"></i></div>
     <div class="qcount" id="qCount">1 / 10</div>
-    <div class="hearts" id="hearts"></div>
   </header>
 
   <div class="slate">
     <div class="slate-head">
-      <span class="scene-tag" id="catTag">Scene</span>
+      <span class="topic-tag" id="catTag">Topic</span>
       <span class="streak" id="streak"></span>
     </div>
     <p class="sentence" id="sentence"></p>
@@ -70,8 +68,7 @@
 <!-- ============ RESULTS ============ -->
 <section class="screen" id="results">
   <div class="result-head">
-    <div class="big-stars" id="bigStars">★★★</div>
-    <h2 class="result-title" id="resTitle">Scene complete</h2>
+    <h2 class="result-title" id="resTitle">Run complete</h2>
     <p class="result-sub" id="resSub">B1 · 8 of 10 correct</p>
   </div>
 
@@ -92,26 +89,45 @@
   </div>
 </section>
 
+<!-- ============ RUN SETUP — asked every time a level is picked ============ -->
+<div class="sheet-wrap" id="setupWrap">
+  <div class="scrim" id="setupScrim"></div>
+  <div class="sheet" role="dialog" aria-label="Set up this run">
+    <div class="grabber"></div>
+    <h2 id="setupTitle">Beginner</h2>
+    <p class="note" id="setupSub"></p>
+
+    <div class="opt">
+      <label id="lblMode">Answer with</label>
+      <div class="picker" id="pickMode" role="group" aria-labelledby="lblMode">
+        <button data-mode="tap" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="8.5" height="6" rx="2"/><rect x="13" y="4.5" width="8.5" height="6" rx="2"/><rect x="2.5" y="13.5" width="8.5" height="6" rx="2"/><rect x="13" y="13.5" width="8.5" height="6" rx="2"/></g></svg>
+          <span>Word tiles</span>
+        </button>
+        <button data-mode="type" aria-pressed="false">
+          <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="1.8" y="5.5" width="20.4" height="13" rx="2.6"/><path d="M5.6 9.2h.01M9 9.2h.01M12.4 9.2h.01M15.8 9.2h.01M19.2 9.2h.01M5.6 12.4h.01M9 12.4h.01M12.4 12.4h.01M15.8 12.4h.01M19.2 12.4h.01M8.2 15.4h7.6"/></g></svg>
+          <span>Keyboard</span>
+        </button>
+      </div>
+      <p class="note" id="modeNote"></p>
+    </div>
+
+    <div class="opt">
+      <label id="lblCount">How many lines in this run?</label>
+      <div class="seg" id="segCount" role="group" aria-labelledby="lblCount"></div>
+    </div>
+
+    <button class="cta" id="startRunBtn">Start</button>
+    <button class="cta ghost" id="cancelSetup">Cancel</button>
+  </div>
+</div>
+
 <!-- ============ SETTINGS ============ -->
 <div class="sheet-wrap" id="sheetWrap">
   <div class="scrim" id="scrim"></div>
   <div class="sheet" role="dialog" aria-label="Settings">
     <div class="grabber"></div>
     <h2>Settings</h2>
-
-    <div class="opt">
-      <label id="lblCount">Lines per run</label>
-      <div class="seg" id="segCount" role="group" aria-labelledby="lblCount"></div>
-    </div>
-
-    <div class="opt">
-      <label id="lblMode">Answer with</label>
-      <div class="seg" id="segMode" role="group" aria-labelledby="lblMode">
-        <button data-mode="tap">Word tiles</button>
-        <button data-mode="type">Keyboard</button>
-      </div>
-      <p class="note" id="modeNote"></p>
-    </div>
 
     <div class="opt">
       <div class="toggle-row">

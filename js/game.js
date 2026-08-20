@@ -1,9 +1,10 @@
 /* =====================================================================
    GAME ENGINE
    Runs a single session: question flow, the first-letter hint, scoring.
-   No timer, no coins, no skip — get it right or lose a heart.
+   No timer, no coins, no skip, no lives — a wrong answer just shows you
+   the word and moves on, so a run always plays out in full.
    ===================================================================== */
-import { QS, norm, esc, shuffle, distractors, levelMeta, renderSentence } from './questions.js';
+import { QS, norm, esc, shuffle, distractors, levelMeta, renderSentence, runLength } from './questions.js';
 import { S } from './state.js';
 import { el, show } from './dom.js';
 import { sfx, buzz } from './audio.js';
@@ -15,9 +16,8 @@ export function startRun(lv) {
   const pool = shuffle(QS[lv].slice());
   R = {
     lv,
-    qs: pool.slice(0, Math.min(S.count, pool.length)),
+    qs: pool.slice(0, runLength(lv, S.count)),
     i: 0,
-    hearts: 3,
     streak: 0,
     best: 0,
     correct: 0,
@@ -31,14 +31,13 @@ export function startRun(lv) {
 }
 
 function loadQ() {
-  if (R.i >= R.qs.length) return endRun(R, 'clear');
+  if (R.i >= R.qs.length) return endRun(R);
   const q = R.qs[R.i];
   R.answered = false;
   R.hintUsed = false;
 
   el('qCount').textContent = (R.i + 1) + ' / ' + R.qs.length;
   el('trackFill').style.width = (R.i / R.qs.length * 100) + '%';
-  drawHearts();
   el('catTag').textContent = q.lv + ' · ' + q.cat;
   el('feedback').textContent = '';
   el('feedback').className = 'feedback';
@@ -47,12 +46,6 @@ function loadQ() {
   renderStreak();
   renderHint();
   renderAnswerZone();
-}
-
-function drawHearts() {
-  el('hearts').innerHTML = [0, 1, 2]
-    .map(n => '<span class="' + (n < R.hearts ? 'on' : '') + '">♥</span>')
-    .join('');
 }
 
 function renderStreak() {
@@ -166,7 +159,6 @@ function submit(val, tileEl) {
     renderStreak();
     next(850);
   } else {
-    R.hearts--;
     R.streak = 0;
     R.misses.push(q);
     slot.className = 'slot filled bad';
@@ -175,13 +167,7 @@ function submit(val, tileEl) {
     fb.innerHTML = 'Answer: <b>' + esc(q.ans) + '</b>';
     sfx.bad();
     buzz([25, 60, 25]);
-    drawHearts();
     renderStreak();
-    if (R.hearts <= 0) {
-      setAction(null);            // no way to keep playing on zero hearts
-      setTimeout(() => endRun(R, 'out'), 1400);
-      return;
-    }
     next(1900);
   }
   setAction('Next');
