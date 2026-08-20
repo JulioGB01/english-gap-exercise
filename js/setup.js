@@ -19,9 +19,12 @@ const label = n => n === 'all' ? 'All' : String(n);
 export function openSetup(lv) {
   pending = lv;
   const L = levelMeta(lv);
+  const t = S.stats[lv];
   document.documentElement.style.setProperty('--accent', L.c);
   el('setupTitle').textContent = L.id + ' · ' + L.name;
-  el('setupSub').textContent = L.sub;
+  el('setupSub').textContent = t && t.seen
+    ? L.sub + ' · ' + t.seen + ' practised, ' + Math.round(t.correct / t.seen * 100) + '% correct'
+    : L.sub;
   render();
   el('setupWrap').classList.add('on');
 }

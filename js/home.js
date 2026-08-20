@@ -1,10 +1,10 @@
 /* =====================================================================
    HOME SCREEN
    Switch-style tile grid. Every level is always open and there is
-   nothing to clear — the tiles just show how much you have practised.
+   nothing to clear, so a tile carries just its code and its name —
+   topics and practice tally live in the setup sheet instead.
    ===================================================================== */
 import { LEVELS } from './data.js';
-import { QS } from './questions.js';
 import { S } from './state.js';
 import { el } from './dom.js';
 import { sfx } from './audio.js';
@@ -19,21 +19,12 @@ export function renderHome() {
   const list = el('levelList');
   list.innerHTML = '';
   LEVELS.forEach(L => {
-    const t = S.stats[L.id];
-    const done = t && t.seen
-      ? Math.round(t.correct / t.seen * 100) + '% of ' + t.seen
-      : 'not yet practised';
     const b = document.createElement('button');
     b.className = 'lvl';
     b.style.setProperty('--c', L.c);
     b.innerHTML =
       '<span class="lvl-code">' + L.id + '</span>' +
-      '<span class="lvl-name">' + L.name + '</span>' +
-      '<span class="lvl-sub">' + L.sub + '</span>' +
-      '<span class="lvl-foot">' +
-        '<span class="lvl-done">' + done + '</span>' +
-        '<span class="lvl-count">' + QS[L.id].length + ' lines</span>' +
-      '</span>';
+      '<span class="lvl-name">' + L.name + '</span>';
     b.addEventListener('click', () => { sfx.tap(); openSetup(L.id); });
     list.appendChild(b);
   });
